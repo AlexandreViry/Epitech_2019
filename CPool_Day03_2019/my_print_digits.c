@@ -1,22 +1,21 @@
 /*
 ** EPITECH PROJECT, 2019
 ** my_print-digits.c
-** File description:Write a function that displays all the digits, on a single line, in ascending order.
+** File description:Write a function that displays all the digits.
 */
 
-#include<unistd.h>
-
-void my_putchar (char c);
+#include <stdio.h>
 
 int my_print_digits(void)
 {
-    int d;
-    
-    d = 48;
-    while (d <= 57)
-    {
-        my_putchar(d);
-        d = d + 1;
-    }
-    return(0);
+    for (char d = '0'; d <= '9'; d++)
+        printf("%c", d);
+    printf("\n");
+    return 0;
+}
+
+int main(void)
+{
+    my_print_digits();
+    return 0;
 }

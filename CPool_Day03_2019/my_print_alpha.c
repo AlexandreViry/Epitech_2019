@@ -5,16 +5,41 @@
 ** displays the lowercase alphabet in ascending order, on a single line.
 */
 
-void my_putchar(char c);
+#include <stdio.h>
 
-int my_print_alpha(void)
+int my_print_alpha1(void)
 {
-    int a;
+    char a;
 
     a = 97;
-    while (a <= 122)
-    {
-        my_putchar(a);
+    while (a <= 122) {
+        printf("%c", a);
         a = a + 1;
     }
+    printf("\n");
+    return 0;
+}
+
+int my_print_alpha2(void)
+{
+    for (char a = 97; a <= 122; a++)
+        printf("%c", a);
+    printf("\n");
+    return 0;
+}
+
+int my_print_alpha3(void)
+{
+    for (char a = 'a'; a <= 'z'; a++)
+        printf("%c", a);
+    printf("\n");
+    return 0;
+}
+
+int main(void)
+{
+    my_print_alpha1();
+    my_print_alpha2();
+    my_print_alpha3();
+    return 0;
 }

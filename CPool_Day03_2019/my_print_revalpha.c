@@ -2,20 +2,21 @@
 ** EPITECH PROJECT, 2019
 ** my_print_revalpha.c
 ** File description:
-** Write a function that, beginning withz, displays the lowercase alphabet in descending order, on a single line.
+**
 */
 
-void my_putchar(char c);
+#include <stdio.h>
 
 int my_print_revalpha(void)
 {
-    int z;
-        
-    z = 122;       
-    while (z >= 97)
-        {
-            my_putchar(z);
-            z = z - 1;
-        }
-        return(0);
+    for (char a = 122; a >= 97; a--)
+        printf("%c", a);
+    printf("\n");
+    return 0;
+}
+
+int main(void)
+{
+    my_print_revalpha();
+    return 0;
 }

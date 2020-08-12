@@ -4,18 +4,18 @@
 ** File description:
 ** Write a function that displays, one-by-one, the characters of a string
 */
-#include<unistd.h>
 
-int my_putchar(char c);
+#include <stdio.h>
 
 int my_putstr(char const *str)
 {
-    int i = 0;
-        
-        while (str[i] != '\0')
-        {
-            my_putchar(str[i]);
-            i = i + 1;
-        }
-        return(0);
+    for (int i = 0; str[i] != '\0'; i++)
+        printf("%c", str[i]);
+    return 0;
+}
+
+int main(void)
+{
+    my_putstr("coucou toi\n");
+    return 0;
 }
