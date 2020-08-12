@@ -11,14 +11,17 @@
 
 char *my_strncpy(char *dest, char const *src , int n)
 {
-    int y = strlen(src);
+    int src_len = strlen(src);
 
-    if (y < n) {
+    if (src_len < n) {
         printf("Not enough char in src for n.\n");
         return NULL;
     }
-    for (int i  = 0; i != n && i < y; ++i)
+    for (int i  = 0; i < n; ++i) {
         dest[i] = src[i];
+        printf("%d\n", i);
+    }
+    dest[n] = '\0';
     return (dest);
 }
 
@@ -28,6 +31,7 @@ int main(void)
     int cmp;
 
     res = my_strncpy(res, "salut à tous", 5);
+    printf("%s", res);
     cmp = strcmp(res, "salut");
     //@ assert cmp == 0;
     return 0;

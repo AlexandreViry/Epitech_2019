@@ -7,30 +7,37 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 char *my_revstr(char *str) {
 
-    int i = 0;
+    int len_str = 0;
     char *tmp;
     int y = 0;
 
-    for (;str[i] != '\0'; i++);
-    tmp = malloc(sizeof(char) * (i + 1));
-    i--;
-    for (; i >= 0; y++, i--)
-        tmp[y] = str[i];
+    len_str = strlen(str);
+    tmp = malloc(sizeof(char) * (len_str + 1));
+    len_str--;
+    for (; len_str >= 0; y++, len_str--)
+        tmp[y] = str[len_str];
+    tmp[y] = '\0';
     return tmp;
 }
 
 int main(void)
 {
     char *res;
+    int cmp;
 
     res = my_revstr("salut");
-    //@ assert res == "tulas";
+    printf("%s\n", res);
+    cmp = strcmp(res, "tulas");
+    //@ assert cmp == 0;
     res = my_revstr("a");
-    //@ assert res == "a";
+    cmp = strcmp(res, "a");
+    //@ assert cmp == 0;
     res = my_revstr("");
-    //@ assert res == "";
+    cmp = strcmp(res, "");
+    //@ assert cmp == 0;
     return 0;
 }
