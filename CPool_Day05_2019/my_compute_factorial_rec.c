@@ -10,7 +10,7 @@
 int my_compute_factorial_rec(int nb)
 {
     if (nb >= 13) {
-        printf("The factorial of this value bigger than INT_MAX.\n");
+        printf("The factorial of %d is bigger than %d.\n", nb, INT_MAX);
         return 0;
     }
     if (nb < 0) {

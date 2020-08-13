@@ -6,13 +6,14 @@
 */
 
 #include <stdio.h>
+#include <limites.h>
 
 int my_compute_factorial_it(int nb)
 {
     int y;
 
     if (nb >= 13) {
-        printf("The factorial of this value bigger than INT_MAX.\n");
+        printf("factorial(%d) is bigger than %d and produces a signed overflow\n", n, INT_MAX);
         return 0;
     }
     if (nb < 0) {

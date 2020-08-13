@@ -19,8 +19,11 @@ int my_compute_power_it(int nb , int p)
     if (p == 0)
         return 1;
     for (; p > 1; p--) {
-        if (INT_MAX / res <= nb && INT_MAX / res > 0)
+        if (INT_MAX / res <= nb && INT_MAX / res > 0) {
+            printf("The result of %d power %d is bigger than %d.\n",
+                   nb, p, INT_MAX);
             return 0;
+        }
         res = nb * res;
     }
     return res;

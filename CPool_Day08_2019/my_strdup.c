@@ -4,21 +4,29 @@
 ** File description:
 ** allocate memories and copies.
 */
-char *my_strdup(char const *src) {
+
+#include <stdlib.h>
+#include <string.h>
+
+char *my_strdup(char const *src)
+{
     char *str;
-    int i = 0;
-    
-    while (src[i] != '\0')
-    {
-        i = i + 1;
-    }
-    str = malloc(sizeof(char) * i);
-    i = 0;
-    while (src[i] != '\0')
-    {
-        str[i]=src[i];
-        i = i + 1;
-    }
-    str[i]='\0';
-    return(str);
+    int src_len = strlen(src);
+
+    str = malloc(str_len + 1);
+    for (int count = 0; src[count] != '\0'; count++)
+        str[count] = src[count];
+    str[src_len] = '\0';
+    return str;
+}
+
+int main(void)
+{
+    char *string;
+    int res;
+
+    string = my_strdup("youpi!!");
+    res = strcmp(string, "youpi!!");
+    //@ assert res == 0;
+    return 0;
 }

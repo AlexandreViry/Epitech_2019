@@ -9,8 +9,16 @@
 
 int my_print_revalpha(void)
 {
-    for (char a = 122; a >= 97; a--)
-        printf("%c", a);
+    for (char letter = 122; letter >= 97; letter--)
+        printf("%c", letter);
+    printf("\n");
+    return 0;
+}
+
+int my_print_revalpha2(void)
+{
+    for (char letter = 'z'; letter >= 'a'; letter--)
+        printf("%c", letter);
     printf("\n");
     return 0;
 }
@@ -18,5 +26,6 @@ int my_print_revalpha(void)
 int main(void)
 {
     my_print_revalpha();
+    my_print_revalpha2();
     return 0;
 }

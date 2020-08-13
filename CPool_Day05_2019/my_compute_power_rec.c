@@ -40,7 +40,6 @@ int main(void)
     res = my_compute_power_rec(-4, 4);
     //@ assert res == 256;
     res = my_compute_power_rec(10000000, 12);
-    printf("%d\n", res);
     //@ assert res == 0;
     return 0;
 }
