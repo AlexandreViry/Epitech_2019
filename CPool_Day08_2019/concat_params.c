@@ -18,7 +18,7 @@ char *concat_params(int argc, char **argv)
         res[len] = '\n';
         len++;
     }
-    res[++len] = '\0';
+    res[len] = '\0';
     return res;
 }
 
