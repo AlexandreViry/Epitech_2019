@@ -10,11 +10,24 @@
 int my_putstr(char const *str)
 {
     if (str == NULL) {
-        printf("This string is empty.\n");
+        printf("Error: 'str' is a NULL pointer.\n");
         return -1;
     }
     for (int i = 0; str[i] != '\0'; i++)
         printf("%c", str[i]);
+    return 0;
+}
+
+int my_putstr2(const char *str)
+{
+    if (str == NULL) {
+        printf("Error: 'str' is a NULL pointer.\n");
+        return -1;
+    }
+    while (*str) {
+        printf("%c", *str);
+        str++;
+    }
     return 0;
 }
 

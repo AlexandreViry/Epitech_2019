@@ -6,25 +6,28 @@
 */
 
 #include <stdio.h>
-#include <limites.h>
+#include <limits.h>
 
 int my_compute_factorial_it(int nb)
 {
     int y;
 
     if (nb >= 13) {
-        printf("factorial(%d) is bigger than %d and produces a signed overflow\n", n, INT_MAX);
+        printf("Factorial(%d) is bigger than %d "
+               "and produces a signed overflow\n", nb, INT_MAX);
         return 0;
     }
     if (nb < 0) {
-        printf("The value must be a positive integer.\n");
+        printf("Cannot compute fact(%d). "
+               "The argument must be a positive integer.\n", nb);
         return 0;
     }
     else if (nb == 1 || nb == 0)
         return 1;
     else {
-        for (y = 1; nb > 1; nb = nb - 1)
+        for (y = 1; nb > 1; nb--)
             y = nb * y;
+        printf("Factorial(%d) == %d\n", nb, y);
         return y;
     }
 }

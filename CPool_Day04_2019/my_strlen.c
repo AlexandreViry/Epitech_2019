@@ -6,25 +6,32 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 
-int my_strlen(char const *str)
+int my_strlen(const char *str)
 {
     int i;
 
-    if (str == NULL)
+    if (str == NULL) {
+        printf("Error: 'str' is a NULL pointer\n");
         return -1;
+    }
     for (i = 0; str[i] != '\0'; i++);
+    printf("Length of '%s' == %d.\n", str, i);
     return i;
 }
 
-int my_strlen2(char const *str)
+int my_strlen2(const char *str)
 {
     int i = 0;
 
-    if (str == NULL)
+    if (str == NULL) {
+        printf("Error: 'str' is a NULL pointer\n");
         return -1;
+    }
     while (str[i] != '\0')
         ++i;
+    printf("Length of '%s' == %d.\n", str, i);
     return i;
 }
 

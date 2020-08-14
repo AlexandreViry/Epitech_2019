@@ -11,21 +11,22 @@
 int my_compute_power_it(int nb , int p)
 {
     int res = nb;
+    int tmp = p;
 
-    if (p < 0) {
-        printf("P value must be greater than or equal to 0");
+    if (tmp < 0) {
+        printf("P value must be greater than or equal to 0\n");
         return 0;
     }
-    if (p == 0)
+    if (tmp == 0)
         return 1;
-    for (; p > 1; p--) {
+    for (; tmp > 1; tmp--) {
         if (INT_MAX / res <= nb && INT_MAX / res > 0) {
-            printf("The result of %d power %d is bigger than %d.\n",
-                   nb, p, INT_MAX);
+            printf("%d to the power of %d produces a signed overflow\n", nb, p);
             return 0;
         }
         res = nb * res;
     }
+    printf("%d to the power of %d == %d\n", nb, p, res);
     return res;
 }
 

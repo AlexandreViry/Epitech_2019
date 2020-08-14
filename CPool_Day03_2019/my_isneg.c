@@ -10,11 +10,11 @@
 int my_isneg(int n)
 {
     if (n < 0) {
-        printf("N\n");
+        printf("'n' is a negative value.\n");
         return 0;
     }
     else {
-        printf("P\n");
+        printf("'n' is a positive value\n");
         return -1;
     }
 }

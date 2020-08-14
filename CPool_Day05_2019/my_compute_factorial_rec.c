@@ -6,21 +6,32 @@
 */
 
 #include <stdio.h>
+#include <limits.h>
 
-int my_compute_factorial_rec(int nb)
+int my_compute_factorial_rec(int n)
 {
-    if (nb >= 13) {
-        printf("The factorial of %d is bigger than %d.\n", nb, INT_MAX);
+    static int last = 0;
+    int res = 1; // factorial(0) == 1 and factorial(1) == 1.
+
+    if (n < 0) {
+        printf("Cannot compute fact(%d). "
+               "The argument must be a positive integer.\n", n);
         return 0;
     }
-    if (nb < 0) {
-        printf("The value must be a positive integer.\n");
+    if (n >= 13) {
+        printf("Factorial(%d) is bigger than %d "
+               "and produces a signed overflow\n", n, INT_MAX);
         return 0;
     }
-    if (nb == 0 || nb == 1)
-        return 1;
-    else
-        return (nb * my_compute_factorial_rec (nb-1));
+    if (n > 1) {
+        last++;
+        res = n * my_compute_factorial_rec(n - 1);
+    }
+    if (last == n) {
+        printf("Factorial(%d) == %d\n", n, res);
+        last = 0;
+    }
+    return res;
 }
 
 int main(void)

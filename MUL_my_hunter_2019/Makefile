@@ -16,9 +16,9 @@ NAME    =       my_hunter
 
 DIRECTORY       =       lib/my
 
-all:    lib $(NAME) 
+all:    lib $(NAME)
 
-CPPFLAG: -Wall -Wextra -Iinclude 
+CPPFLAG: -Wall -Wextra -Iinclude
 
 lib: $(DIRECTORY)
 	make -C $(DIRECTORY)

@@ -9,12 +9,11 @@
 
 int my_print_alpha1(void)
 {
-    char a;
+    char c = 97;
 
-    a = 97;
-    while (a <= 122) {
-        printf("%c", a);
-        a = a + 1;
+    while (c <= 122) {
+        printf("%c", c);
+        c = c + 1;
     }
     printf("\n");
     return 0;
@@ -22,16 +21,16 @@ int my_print_alpha1(void)
 
 int my_print_alpha2(void)
 {
-    for (char a = 97; a <= 122; a++)
-        printf("%c", a);
+    for (char c = 97; c <= 122; c++)
+        printf("%c", c);
     printf("\n");
     return 0;
 }
 
 int my_print_alpha3(void)
 {
-    for (char a = 'a'; a <= 'z'; a++)
-        printf("%c", a);
+    for (char c = 'a'; c <= 'z'; c++)
+        printf("%c", c);
     printf("\n");
     return 0;
 }

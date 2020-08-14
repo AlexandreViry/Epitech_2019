@@ -8,16 +8,16 @@
 
 int my_print_digits(void)
 {
-    for (char digit = '0'; digit <= '9'; digit++)
-        printf("%c", digit);
+    for (char d = '0'; d <= '9'; d++)
+        printf("%c", d);
     printf("\n");
     return 0;
 }
 
 int my_print_digits2(void)
 {
-    for (char digit = 48; digit <= 57; digit++)
-        printf("%c", digit);
+    for (char d = 48; d <= 57; d++)
+        printf("%c", d);
     printf("\n");
     return 0;
 }
