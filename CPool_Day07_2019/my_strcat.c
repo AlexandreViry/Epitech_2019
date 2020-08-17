@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** my_strcat
 ** File description:
-** function that contatenate two strings
+** Function that contatenate two strings and returns 'dest'.
 */
 
 #include <stdio.h>

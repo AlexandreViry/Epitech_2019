@@ -1,4 +1,4 @@
-/*
+x/*
 ** EPITECH PROJECT, 2019
 ** my_strdup
 ** File description:

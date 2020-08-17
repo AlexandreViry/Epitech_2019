@@ -1,7 +1,7 @@
 /*
 ** EPITECH PROJECT, 2019
 ** my_swap.c
-** File description:
+** File description: swap the value of two pointers.
 **
 */
 

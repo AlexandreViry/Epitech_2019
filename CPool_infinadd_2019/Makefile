@@ -1,34 +1,31 @@
 ##
 ## EPITECH PROJECT, 2019
-## Makefile
+## makefile
 ## File description:
-## compile several functions 
+## compile everything
 ##
 
-SRC	=	my_putstr.c	\
-		my__putchar.c	\
+SRC	=	main.c		\
+		infin_add.c	\
+		my_putstr.c	\
+		my_putchar.c	\
 		my_revstr.c	\
-		my_strlen.c	\
-		infin_add.c
 
-OBJ	=	$(SRC:.c=.o)
+OBJ	=       $(SRC:.c=.o)
 
 NAME	=	infin_add
 
-all	:	$(NAME)
+CPPFLAGS	= -Wall -Wextra -Iinclude
 
-$(NAME)	:	$(OBJ)
-	ar rc libmy.a $(OBJ)
-	cp libmy.a ../
-	cp my.h ../../include
-	gcc -o $(NAME) -L. -lmy
+all:	$(NAME)
 
-clean	:
+$(NAME):        $(OBJ)
+	gcc -g3 -o $(NAME) $(OBJ)
+
+clean:
 	rm -f $(OBJ)
-fclean	: clean
+
+fclean:		clean
 	rm -f $(NAME)
-	rm -f libmy.a
 
-re	:	fclean all
-
-.PHONY	:	all clean fclean re
+re:     fclean all

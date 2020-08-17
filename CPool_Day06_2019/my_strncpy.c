@@ -2,7 +2,8 @@
 ** EPITECH PROJECT, 2019
 ** my_strncpy
 ** File description:
-** copiesncharacters from a string into another.
+** Copy the the n firsts characters of the second string given in parameter and
+** pastes it in the first string and it returns this string.
 */
 
 #include <stdlib.h>

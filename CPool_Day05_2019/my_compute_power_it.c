@@ -2,7 +2,8 @@
 ** EPITECH PROJECT, 2019
 ** my_compute_power_it
 ** File description:
-** iterative function
+** Iterative function that gives the result of the number and the power
+** given in parameter.
 */
 
 #include <limits.h>

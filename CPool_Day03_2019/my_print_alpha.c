@@ -7,6 +7,10 @@
 
 #include <stdio.h>
 
+/*
+** Displaying the alphabet with letter and ASCII values of the letters
+** and a 'while' loop.
+*/
 int my_print_alpha1(void)
 {
     char c = 97;
@@ -19,6 +23,11 @@ int my_print_alpha1(void)
     return 0;
 }
 
+/*
+** Displaying the alphabet with letter and ASCII values of the letters
+** and a 'for' loop.
+*/
+
 int my_print_alpha2(void)
 {
     for (char c = 97; c <= 122; c++)
@@ -26,6 +35,11 @@ int my_print_alpha2(void)
     printf("\n");
     return 0;
 }
+
+/*
+** Displaying the alphabet with the char values of the letters
+** and a 'for' loop.
+*/
 
 int my_print_alpha3(void)
 {

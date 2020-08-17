@@ -2,7 +2,8 @@
 ** EPITECH PROJECT, 2019
 ** my_compute_power_rec
 ** File description:
-** recursive function give power
+** Recursive function that returns the result of the number and the power given
+** in parameter.
 */
 
 #include <stdio.h>

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** my_revstr
 ** File description:
-** reverse a string
+** Returns the string given in parameter inverted.
 */
 
 #include <stdlib.h>

@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+** This function takes an array and returns a single string, with all the lines
+** of the array separated by a '\n'.
+*/
+
 char *concat_params(int argc, char **argv)
 {
     int len = 0;

@@ -7,6 +7,10 @@
 
 #include <stdio.h>
 
+/*
+** Displays one-by-one the characters of a string, by using a 'for' loop.
+*/
+
 int my_putstr(char const *str)
 {
     if (str == NULL) {
@@ -17,6 +21,10 @@ int my_putstr(char const *str)
         printf("%c", str[i]);
     return 0;
 }
+
+/*
+** Displays one-by-one the characters of a string, by using a 'while' loop.
+*/
 
 int my_putstr2(const char *str)
 {

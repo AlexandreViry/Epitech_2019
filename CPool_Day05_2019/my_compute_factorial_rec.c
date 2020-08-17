@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** my_compute_factorial_rec.c
 ** File description:
-** Write a recursive function for number given.
+** Return the factorial of the number given in parameter by using the recursive.
 */
 
 #include <stdio.h>

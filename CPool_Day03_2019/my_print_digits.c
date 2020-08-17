@@ -6,6 +6,11 @@
 
 #include <stdio.h>
 
+/*
+** Displaying all digits in ascending order, using the character of numbers
+** for the loop.
+*/
+
 int my_print_digits(void)
 {
     for (char d = '0'; d <= '9'; d++)
@@ -13,6 +18,11 @@ int my_print_digits(void)
     printf("\n");
     return 0;
 }
+
+/*
+** Displaying all digits in ascending order, using the ASCII value of numbers
+** for the loop.
+*/
 
 int my_print_digits2(void)
 {

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** my_compute_factorial_it
 ** File description:
-** day 5 task 1.
+** Return the factorial of the number given in parameter.
 */
 
 #include <stdio.h>

@@ -8,6 +8,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/*
+** Displays and return the number of characters of the string sent
+** in parameter by using a 'for' loop.
+*/
+
 int my_strlen(const char *str)
 {
     int i;
@@ -20,6 +25,11 @@ int my_strlen(const char *str)
     printf("Length of '%s' == %d.\n", str, i);
     return i;
 }
+
+/*
+** Displays and return the number of characters of the string sent
+** in parameter by using a 'while' loop.
+*/
 
 int my_strlen2(const char *str)
 {

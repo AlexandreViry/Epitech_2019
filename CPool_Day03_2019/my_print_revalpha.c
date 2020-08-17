@@ -7,6 +7,11 @@
 
 #include <stdio.h>
 
+/*
+** Displaying the alphabet backwards, using the ASCII value of the characters
+** for the loop.
+*/
+
 int my_print_revalpha(void)
 {
     for (char c = 122; c >= 97; c--)
@@ -14,6 +19,10 @@ int my_print_revalpha(void)
     printf("\n");
     return 0;
 }
+
+/*
+** Displaying the alphabet backwards, using the characters for the loop.
+*/
 
 int my_print_revalpha2(void)
 {

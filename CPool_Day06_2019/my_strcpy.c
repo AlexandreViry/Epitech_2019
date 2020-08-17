@@ -2,7 +2,8 @@
 ** EPITECH PROJECT, 2019
 ** my_strcpy
 ** File description:
-** copy and past a string
+** Copy the second string given in parameter and pastes it in the first string
+** and it returns this string.
 */
 
 #include <stdio.h>
