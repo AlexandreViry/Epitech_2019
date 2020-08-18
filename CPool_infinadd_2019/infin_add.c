@@ -12,17 +12,14 @@ char *last_carry(char *result, int carry, int count)
     int i;
     int y;
 
-    if (carry > 0)
-        result[count] = result[count] + carry;
+    for (int i = 0; i != count; i++)
+        result[i] = NTA(result[i]);
+    if (carry > 0) {
+        result[count] = NTA(1);
+        result[count + 1] = '\0';
+    }
     else
         result[count] = '\0';
-    for (int i = 0; i != count + 1; i++)
-        result[i] = NTA(result[i]);
-    /*    while (*result) {
-        *result = NTA(*result);
-        result++;
-    }
-*/
     result = my_revstr(result);
     for (i = 0; result[i] == '0' && result[i + 1] != '\0'; i++)
         if (result[i] == '\0')
@@ -38,11 +35,13 @@ char *negative_carry(char *result, int carry, int count)
     int i;
     int y;
 
-    if (carry > 0)
+    if (carry > 0) {
         result[count] = result[count] - carry;
+        result[count + 1] = '\0';
+    }
     else
         result[count] = 0;
-    for (int i = 0; i != count + 1; i++)
+    for (int i = 0; i != count; i++)
         result[i] = NTA(result[i]);
     result = my_revstr(result);
     for (i = 0; result[i] == '0' && result[i + 1] != '\0'; i++)
@@ -84,7 +83,7 @@ char *calculator(char *str, char *str2, char *result)
     int count = 0;
 
     for (int i = 0; str2[i] != '\0'; i++, count = i) {
-        result[i] = str2[i] + str[i] + carry - 96;
+        result[i] = str[i] + str2[i] + carry - 96;
         carry = 0;
         if (result[i] > 9) {
             result[i] -= 10;
