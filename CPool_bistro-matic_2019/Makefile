@@ -10,10 +10,15 @@ SRC	=	main.c		\
 		src/my_putstr.c	\
 		src/my_putchar.c	\
 		src/my_revstr.c	\
+		product.c	\
+		src/my_compute_power_it.c	\
+		src/clear_string.c	\
+		division.c		\
+		infin_sub.c		\
 
 OBJ	=       $(SRC:.c=.o)
 
-NAME	=	infin_add
+NAME	=	bistro-matic
 
 CPPFLAGS	= -Wall -Wextra -Iinclude
 

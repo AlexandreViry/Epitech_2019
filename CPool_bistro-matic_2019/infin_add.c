@@ -15,7 +15,7 @@ char *last_carry(char *result, int carry, int count)
     for (int i = 0; i != count; i++)
         result[i] = NTA(result[i]);
     if (carry > 0) {
-        result[count] = NTA(1);
+        result[count] = NTA(carry);
         result[count + 1] = '\0';
     }
     else
@@ -152,11 +152,11 @@ char *negative(char *str, char *str2, char *result)
     if (str[strlen(str) - 1] == '-') {
         str[strlen(str) - 1] = '\0';
         if (who_is_bigger(str, str2) == 1) {
-            result = subtractor(str, str2, result);
+            result = subtractor(str2, str, result);
             result = change_sign(result);
         }
         if (who_is_bigger(str, str2) == 2)
-            result = subtractor(str2, str, result);
+            result = subtractor(str, str2, result);
     } else {
         str2[strlen(str2) - 1] = '\0';
         if (who_is_bigger(str, str2) == 1)
