@@ -131,7 +131,9 @@ int who_is_bigger(char *str, char *str2)
         }
     if (strlen(str) > strlen(str2))
         return 1;
-    return 2;
+    if (strlen(str2) > strlen(str))
+        return 2;
+    return 1;
 }
 
 char *change_sign(char *result)
@@ -151,18 +153,20 @@ char *negative(char *str, char *str2, char *result)
 {
     if (str[strlen(str) - 1] == '-') {
         str[strlen(str) - 1] = '\0';
-        if (who_is_bigger(str, str2) == 1) {
+        if (who_is_bigger(my_revstr(str), my_revstr(str2)) == 2)
+            result = subtractor(str2, str, result);
+        if (who_is_bigger(my_revstr(str), my_revstr(str2)) == 1) {
+            result = subtractor(str, str2, result);
+            result = change_sign(result);
+        }
+    } else {
+        str2[strlen(str2) - 1] = '\0';
+        if (who_is_bigger(my_revstr(str), my_revstr(str2)) == 1)
+            result = subtractor(str, str2, result);
+        if (who_is_bigger(my_revstr(str), my_revstr(str2)) == 2) {
             result = subtractor(str2, str, result);
             result = change_sign(result);
         }
-        if (who_is_bigger(str, str2) == 2)
-            result = subtractor(str, str2, result);
-    } else {
-        str2[strlen(str2) - 1] = '\0';
-        if (who_is_bigger(str, str2) == 1)
-            result = subtractor(str, str2, result);
-        if (who_is_bigger(str, str2) == 2)
-            result = subtractor(str2, str, result);
     }
     return result;
 }

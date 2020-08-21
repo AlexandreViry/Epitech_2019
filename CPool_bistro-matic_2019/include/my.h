@@ -28,3 +28,5 @@ char *infin_sub(char *str, char *str2);
 char *infin_div(char *str, char *str2);
 char *subtractor(char *str, char *str2, char *result);
 char *change_sign(char *result);
+int who_is_bigger(char *str, char *str2);
+char *negative(char *str, char *str2, char *result);
