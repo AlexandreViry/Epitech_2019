@@ -38,8 +38,6 @@ char *big_numbers_modulo(char *str, char *str2, char *result)
         }
         result = infin_add(infin_mult(result, "10"), sub_loop(tmp, str2));
     }
-    puts(result);
-    puts(infin_mult(result, str2));
     return infin_sub(mod, infin_mult(str2, result));
 }
 

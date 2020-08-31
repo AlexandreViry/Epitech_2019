@@ -5,7 +5,7 @@ char *power_of_ten(int i)
     char *res = malloc(i + 2);
     int y;
 
-    for (y = 0; y < i - 1; y++)
+    for (y = 0; y < i; y++)
         res[y] = '0';
     res[y] = '1';
     res[y + 1] = '\0';

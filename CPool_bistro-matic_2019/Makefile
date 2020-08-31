@@ -11,7 +11,6 @@ SRC	=	main.c		\
 		src/my_putchar.c	\
 		src/my_revstr.c	\
 		product.c	\
-		modulo.c	\
 		src/my_compute_power_it.c	\
 		src/clear_string.c	\
 		division.c		\

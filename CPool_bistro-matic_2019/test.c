@@ -436,8 +436,6 @@ char *recup_string(char *str, unsigned int len)
     char *new_string;
     int i;
 
-    if (strlen(str) < len)
-        return "0";
     new_string = malloc(strlen(str) + 1);
     for (i = 0; str[len] != '\0'; i++, len++) {
         new_string[i] = str[len];

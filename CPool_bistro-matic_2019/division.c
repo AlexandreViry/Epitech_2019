@@ -1,42 +1,40 @@
 #include "include/my.h"
 
-char *div_loop(char *str, char *str2)
-{
-    char *result = "0";
-    char *tmp = "0";
-
-    while (who_is_bigger(tmp, str) == 2) {
-        tmp = infin_add(tmp, str2);
-        result = infin_add(result, "1");
-    }
-    if (strcmp(infin_sub(tmp, str), "0") != 0)
-        result = infin_sub(result, "1");
-    free(tmp);
-    return result;
-}
-
-char *divide_string(char *str, unsigned int len)
+char *divide_string(char *str, char *str2)
 {
     char *new_string;
+    unsigned int len = strlen(str2);
 
-    if (str == NULL)
-        return NULL;
-    if (strlen(str) < len)
-        return str;
-    new_string = malloc(len + 2);
+    if (who_is_bigger(str, str2) == 2)
+        return "0";
+    if ((new_string = malloc(len + 2)) == NULL) {
+        printf("Memory allocation failed");
+        exit(84);
+    }
+    for (unsigned int i = 0; i < len; i++)
+        if (str[i] < str2[i]) {
+            len++;
+            break;
+        }
     for (unsigned int i = 0; i < len; i++)
         new_string[i] = str[i];
     new_string[len] = '\0';
     return new_string;
 }
 
-char *recup_string(char *str, unsigned int len)
+char *recup_string(char *str, char *str2)
 {
     char *new_string;
     int i;
+    unsigned int len = strlen(str2);
 
-    if (strlen(str) < len)
+    if (who_is_bigger(str, str2) == 2)
         return "0";
+    for (unsigned int i = 0; i < len; i++)
+        if (str[i] < str2[i]) {
+            len++;
+            break;
+        }
     new_string = malloc(strlen(str) + 1);
     for (i = 0; str[len] != '\0'; i++, len++) {
         new_string[i] = str[len];
@@ -45,54 +43,52 @@ char *recup_string(char *str, unsigned int len)
     return new_string;
 }
 
-char *sub_loop(char *str, char *str2)
-{
-    char *count;
-
-    for (count = "0"; who_is_bigger(str, str2) != 2; count =
-             infin_add(count, "1"))
-        str = infin_sub(str, str2);
-    return count;
-}
-
 char *sub_loop2(char *str, char *str2)
 {
-    char *count;
-
-    for (count = "0"; who_is_bigger(str, str2) != 2; count =
-             infin_add(count, "1"))
+    while (strcmp(str, "0") != 0 && who_is_bigger(str, str2) == 1)
         str = infin_sub(str, str2);
     return str;
 }
 
-char *big_numbers(char *str, char *str2, char *result)
+char *sub_loop(char *str, char *str2)
 {
-    char *tmp;
-    char *rest = str;
-    int diff = strlen(str) - strlen(str2);
+    char *count;
 
-    printf("%d\n", diff);
-    if (diff < 4)
-        return(div_loop(str, str2));
-    while (strcmp(recup_string(str, strlen(str2)), "0") != 0) {
-        if (who_is_bigger(divide_string(str, strlen(str2)), str2) == 2) {
-            tmp = divide_string(str, strlen(str2) + 1);
-            rest = recup_string(str, strlen(str2) + 1);
-            str = infin_add(rest, infin_mult(sub_loop2(tmp, str2),
-                                             power_of_ten(strlen(rest) + 1)));
-        } else {
-            tmp = divide_string(str, strlen(str2));
-            rest = recup_string(str, strlen(str2));
-            str = infin_add(rest, infin_mult(sub_loop2(tmp, str2),
-                                            power_of_ten(strlen(rest) + 1)));
-        }
-        result = infin_add(infin_mult(result, "10"), sub_loop(tmp, str2));
+    for (count = "0"; strcmp(str, "0") != 0 && who_is_bigger(str, str2) == 1;
+         count = infin_add(count, "1")) {
+        str = infin_sub(str, str2);
     }
-    result[strlen(result) - 1] = '\0';
-    if (strcmp(rest, "0") != 0)
-        result = infin_sub(result, "1");
-    return result;
+    return count;
+}
 
+char *init_nb3(char *str)
+{
+    char *nb3;
+
+    if ((nb3 = malloc(strlen(str) + 1)) == NULL) {
+        printf("Memory allocation failed.");
+        exit(84);
+}
+    for (unsigned int i = 0; i < strlen(str); i++)
+    nb3[i] = str[i];
+    return nb3;
+}
+
+char *big_numbers(char *nb1, char *nb2, char *result)
+{
+    char *rest;
+    char *tmp;
+
+    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1)
+    {
+        tmp = divide_string(nb1, nb2);
+        result = infin_add(infin_mult(result, "10"), sub_loop(tmp, nb2));
+        rest = sub_loop2(tmp, nb2);
+        nb1 = recup_string(nb1, nb2);
+        rest = infin_mult(rest, power_of_ten(strlen(nb1)));
+        nb1 = infin_add(nb1, rest);
+    }
+    return result;
 }
 
 char *negative_to_positive2(char *str)
