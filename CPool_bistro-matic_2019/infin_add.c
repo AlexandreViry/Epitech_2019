@@ -177,10 +177,12 @@ char *func_call(char *str, char *str2, int len)
 
     str = my_revstr(str);
     str2 = my_revstr(str2);
-    if (str2[strlen(str2) - 1] == '-' && str[strlen(str) - 1] == '-')
-        return double_negative(str, str2, result);
-    else if (str2[strlen(str2) - 1] == '-' || str[strlen(str) - 1] == '-')
-        return negative(str, str2, result);
+    if (strlen(str) > 1 && strlen(str2) > 2) {
+        if (str2[strlen(str2) - 1] == '-' && str[strlen(str) - 1] == '-')
+            return double_negative(str, str2, result);
+        else if (str2[strlen(str2) - 1] == '-' || str[strlen(str) - 1] == '-')
+            return negative(str, str2, result);
+    }
     result = calculator(str, str2, result);
     return result;
 }

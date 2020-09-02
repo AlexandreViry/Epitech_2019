@@ -38,3 +38,8 @@ char *recup_string(char *str, char *str2);
 char *divide_string(char *str, char *str2);
 char *negative_to_positive2(char *str);
 char *infin_mod(char *str, char *str2);
+char *if_zero(char *result, char *str, char *str2, char *init);
+char *negativity(char *str, char *str2);
+char *parentheses(char *str);
+char *eval_expr(char *init);
+char **my_str_to_word_array(char *init);

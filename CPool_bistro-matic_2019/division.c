@@ -29,7 +29,7 @@ char *recup_string(char *str, char *str2)
     unsigned int len = strlen(str2);
 
     if (who_is_bigger(str, str2) == 2)
-        return "0";
+        return NULL;
     for (unsigned int i = 0; i < len; i++)
         if (str[i] < str2[i]) {
             len++;
@@ -68,25 +68,44 @@ char *init_nb3(char *str)
     if ((nb3 = malloc(strlen(str) + 1)) == NULL) {
         printf("Memory allocation failed.");
         exit(84);
-}
+    }
     for (unsigned int i = 0; i < strlen(str); i++)
-    nb3[i] = str[i];
+        nb3[i] = str[i];
     return nb3;
+}
+
+char *if_zero(char *result, char *str, char *str2, char *init)
+{
+    int i;
+    char *mult;
+
+    if (str[0] == '0' && strcmp(init, infin_mult(result, str2)) != 0)
+        for (i = 0; str[i] == '0'; i++);
+    else
+        return result;
+    mult = power_of_ten(i);
+    result = infin_mult(result, mult);
+    return result;
 }
 
 char *big_numbers(char *nb1, char *nb2, char *result)
 {
+    char *init = nb1;
     char *rest;
     char *tmp;
 
-    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1)
+    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1 && strcmp
+           (infin_mult(result, nb2), init) != 0)
     {
         tmp = divide_string(nb1, nb2);
         result = infin_add(infin_mult(result, "10"), sub_loop(tmp, nb2));
         rest = sub_loop2(tmp, nb2);
         nb1 = recup_string(nb1, nb2);
-        rest = infin_mult(rest, power_of_ten(strlen(nb1)));
-        nb1 = infin_add(nb1, rest);
+        if (nb1[0] != '0' || nb1[1] == '\0') {
+            rest = infin_mult(rest, power_of_ten(strlen(nb1)));
+            nb1 = infin_add(nb1, rest);
+        }
+        result = if_zero(result, nb1, nb2, init);
     }
     return result;
 }

@@ -9,8 +9,12 @@ SRC	=	main.c		\
 		infin_add.c	\
 		src/my_putstr.c	\
 		src/my_putchar.c	\
+		my_str_to_word_array.c	\
 		src/my_revstr.c	\
+		parentheses.c	\
+		eval_expr.c	\
 		product.c	\
+		modulo.c		\
 		src/my_compute_power_it.c	\
 		src/clear_string.c	\
 		division.c		\

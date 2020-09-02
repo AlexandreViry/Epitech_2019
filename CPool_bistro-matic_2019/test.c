@@ -14,7 +14,7 @@ char *power_of_ten(int i)
 
     res[0] = '1';
     i++;
-    for (y = 1; y < i - 1; y++)
+    for (y = 1; y < i; y++)
         res[y] = '0';
     res[y] = '\0';
     return res;
@@ -220,10 +220,12 @@ char *func_call(char *str, char *str2, int len)
 
     str = my_revstr(str);
     str2 = my_revstr(str2);
-    if (str2[strlen(str2) - 1] == '-' && str[strlen(str) - 1] == '-')
-        return double_negative(str, str2, result);
-    else if (str2[strlen(str2) - 1] == '-' || str[strlen(str) - 1] == '-')
-        return negative(str, str2, result);
+    if (strlen(str) > 1 && strlen(str2) > 2) {
+        if (str2[strlen(str2) - 1] == '-' && str[strlen(str) - 1] == '-')
+            return double_negative(str, str2, result);
+        else if (str2[strlen(str2) - 1] == '-' || str[strlen(str) - 1] == '-')
+            return negative(str, str2, result);
+    }
     result = calculator(str, str2, result);
     return result;
 }
@@ -401,41 +403,41 @@ char *infin_sub(char *str, char *str2)
     return result;
 }
 
-char *div_loop(char *str, char *str2)
-{
-    char *result = "0";
-    char *tmp = "0";
-
-    while (who_is_bigger(tmp, str) == 2) {
-        tmp = infin_add(tmp, str2);
-        result = infin_add(result, "1");
-    }
-    if (strcmp(infin_sub(tmp, str), "0") != 0)
-        result = infin_sub(result, "1");
-    free(tmp);
-    return result;
-}
-
-char *divide_string(char *str, unsigned int len)
+char *divide_string(char *str, char *str2)
 {
     char *new_string;
+    unsigned int len = strlen(str2);
 
-    if (str == NULL)
-        return NULL;
-    if (strlen(str) < len)
-        return str;
-    new_string = malloc(len + 2);
+    if (who_is_bigger(str, str2) == 2)
+        return "0";
+    if ((new_string = malloc(len + 2)) == NULL) {
+        printf("Memory allocation failed");
+        exit(84);
+    }
+    for (unsigned int i = 0; i < len; i++)
+        if (str[i] < str2[i]) {
+            len++;
+            break;
+        }
     for (unsigned int i = 0; i < len; i++)
         new_string[i] = str[i];
     new_string[len] = '\0';
     return new_string;
 }
 
-char *recup_string(char *str, unsigned int len)
+char *recup_string(char *str, char *str2)
 {
     char *new_string;
     int i;
+    unsigned int len = strlen(str2);
 
+    if (who_is_bigger(str, str2) == 2)
+        return NULL;
+    for (unsigned int i = 0; i < len; i++)
+        if (str[i] < str2[i]) {
+            len++;
+            break;
+        }
     new_string = malloc(strlen(str) + 1);
     for (i = 0; str[len] != '\0'; i++, len++) {
         new_string[i] = str[len];
@@ -444,54 +446,71 @@ char *recup_string(char *str, unsigned int len)
     return new_string;
 }
 
-char *sub_loop(char *str, char *str2)
-{
-    char *count;
-
-    for (count = "0"; who_is_bigger(str, str2) != 2; count =
-             infin_add(count, "1"))
-        str = infin_sub(str, str2);
-    return count;
-}
-
 char *sub_loop2(char *str, char *str2)
 {
-    char *count;
-
-    for (count = "0"; who_is_bigger(str, str2) != 2; count =
-             infin_add(count, "1"))
+    while (strcmp(str, "0") != 0 && who_is_bigger(str, str2) == 1)
         str = infin_sub(str, str2);
     return str;
 }
 
-char *big_numbers(char *str, char *str2, char *result)
+char *sub_loop(char *str, char *str2)
 {
-    char *tmp;
-    char *rest = str;
-    int diff = strlen(str) - strlen(str2);
+    char *count;
 
-    if (diff < 4)
-        return(div_loop(str, str2));
-    while (strcmp(recup_string(str, strlen(str2)), "0") != 0) {
-        if (who_is_bigger(divide_string(str, strlen(str2)), str2) == 2) {
-            tmp = divide_string(str, strlen(str2) + 1);
-            rest = recup_string(str, strlen(str2) + 1);
-            str = infin_add(rest, infin_mult(sub_loop2(tmp, str2),
-                                             power_of_ten(strlen(rest) + 1)));
-        } else {
-            tmp = divide_string(str, strlen(str2));
-            rest = recup_string(str, strlen(str2));
-            str = infin_add(rest, infin_mult(sub_loop2(tmp, str2),
-                                            power_of_ten(strlen(rest) + 1)));
-        }
-        result = infin_add(infin_mult(result, "10"), sub_loop(tmp, str2));
+    for (count = "0"; strcmp(str, "0") != 0 && who_is_bigger(str, str2) == 1;
+         count = infin_add(count, "1")) {
+        str = infin_sub(str, str2);
     }
-    puts(rest);
-    result[strlen(result) - 1] = '\0';
-    if (strcmp(rest, "0") != 0)
-        result = infin_sub(result, "1");
-    return result;
+    return count;
+}
 
+char *init_nb3(char *str)
+{
+    char *nb3;
+
+    if ((nb3 = malloc(strlen(str) + 1)) == NULL) {
+        printf("Memory allocation failed.");
+        exit(84);
+    }
+    for (unsigned int i = 0; i < strlen(str); i++)
+        nb3[i] = str[i];
+    return nb3;
+}
+
+char *if_zero(char *result, char *str, char *str2, char *init)
+{
+    int i;
+    char *mult;
+
+    if (str[0] == '0' && strcmp(init, infin_mult(result, str2)) != 0)
+        for (i = 0; str[i] == '0'; i++);
+    else
+        return result;
+    mult = power_of_ten(i);
+    result = infin_mult(result, mult);
+    return result;
+}
+
+char *big_numbers(char *nb1, char *nb2, char *result)
+{
+    char *init = nb1;
+    char *rest;
+    char *tmp;
+
+    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1 && strcmp
+           (infin_mult(result, nb2), init) != 0)
+    {
+        tmp = divide_string(nb1, nb2);
+        result = infin_add(infin_mult(result, "10"), sub_loop(tmp, nb2));
+        rest = sub_loop2(tmp, nb2);
+        nb1 = recup_string(nb1, nb2);
+        if (nb1[0] != '0' || nb1[1] == '\0') {
+            rest = infin_mult(rest, power_of_ten(strlen(nb1)));
+            nb1 = infin_add(nb1, rest);
+        }
+        result = if_zero(result, nb1, nb2, init);
+    }
+    return result;
 }
 
 char *negative_to_positive2(char *str)
@@ -534,11 +553,74 @@ char *infin_div(char *str, char *str2)
     return result;
 }
 
+char *calc_modulo(char *nb1, char *nb2, char *result)
+{
+    char *init = nb1;
+    char *rest;
+    char *tmp;
+
+    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1 && strcmp
+           (infin_mult(result, nb2), init) != 0)
+    {
+        tmp = divide_string(nb1, nb2);
+        result = infin_add(infin_mult(result, "10"), sub_loop(tmp, nb2));
+        rest = sub_loop2(tmp, nb2);
+        nb1 = recup_string(nb1, nb2);
+        if (nb1[0] != '0' || nb1[1] == '\0') {
+            rest = infin_mult(rest, power_of_ten(strlen(nb1)));
+            nb1 = infin_add(nb1, rest);
+        }
+        result = if_zero(result, nb1, nb2, init);
+    }
+    return nb1;
+}
+
+char *modulo_negativity(char *str, char *str2)
+{
+    if (str[0] == '-' && str2[0] == '-')
+        return calc_modulo(negative_to_positive2(str),
+                           negative_to_positive2(str2), "0");
+    if (str[0] == '-' && str2[0] != '-')
+        return change_sign(calc_modulo(negative_to_positive2(str), str2, "0"));
+    if (str[0] != '-' && str2[0] == '-')
+        return change_sign(calc_modulo(str, negative_to_positive2(str2), "0"));
+    return str;
+}
+
+char *infin_mod(char *str, char *str2)
+{
+    char *result;
+
+    if (strcmp(str, "0") == 0)
+        return "0";
+    if (strcmp(str2, "0") == 0) {
+        printf("Error: divisions by 0 are prohibited.\n");
+        exit(84);
+    }
+    if (strcmp(str, str2) == 0)
+        return "1";
+    if (str[0] == '-' || str2[0] == '-')
+        return modulo_negativity(str, str2);
+    if (strlen(str2) > strlen(str))
+        return "0";
+    result = calc_modulo(str, str2, "0");
+    return result;
+}
+
 int main(void)
 {
     int res;
     char *result;
 
+    result = infin_mod("13", "2");
+    res = strcmp(result, "1");
+    //@ assert res == 0;
+    result = infin_mod("500", "30");
+    res = strcmp(result, "20");
+    //@ assert res == 0;
+    result = infin_mod("-13", "2");
+    res = strcmp(result, "-1");
+    //@ assert res == 0;
     result = infin_div("-100", "10");
     res = strcmp(result, "-10");
     //@ assert res == 0;
