@@ -64,10 +64,7 @@ char **fill_array(char **result, char *init, int count, int len)
 char **my_str_to_word_array(char *init)
 {
     char **result = malloc_array(init, 0, strlen(init));
-    int curs;
 
     result = fill_array(result, init, 0, strlen(init));
-    for (int i = 0; result[i] != NULL; i++)
-        puts(result[i]);
     return result;
 }
