@@ -48,14 +48,6 @@ char *calc_parentheses(char *result, char *str, int start, int end)
     return result;
 }
 
-int analyse_parentheses(char *str)
-{
-    for (int i = 0; str[i] != '\0'; i++)
-        if (str[i] == '(')
-            return 1;
-    return 0;
-}
-
 char *parentheses_loop(char *str)
 {
     char *result;

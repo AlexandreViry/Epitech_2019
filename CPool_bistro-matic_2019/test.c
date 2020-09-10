@@ -258,7 +258,7 @@ char *double_negative(char *str, char *str2, char *result)
     return result2;
 }
 
-int who_is_bigger(char *str, char *str2)
+int compare_size(char *str, char *str2)
 {
     if (strlen(str) == strlen(str2))
         for (int i = 0; str[i] != '\0'; i++) {
@@ -291,17 +291,17 @@ char *negative(char *str, char *str2, char *result)
 {
     if (str[strlen(str) - 1] == '-') {
         str[strlen(str) - 1] = '\0';
-        if (who_is_bigger(my_revstr(str), my_revstr(str2)) == 2)
+        if (compare_size(my_revstr(str), my_revstr(str2)) == 2)
             result = subtractor(str2, str, result);
-        if (who_is_bigger(my_revstr(str), my_revstr(str2)) == 1) {
+        if (compare_size(my_revstr(str), my_revstr(str2)) == 1) {
             result = subtractor(str, str2, result);
             result = change_sign(result);
         }
     } else {
         str2[strlen(str2) - 1] = '\0';
-        if (who_is_bigger(my_revstr(str), my_revstr(str2)) == 1)
+        if (compare_size(my_revstr(str), my_revstr(str2)) == 1)
             result = subtractor(str, str2, result);
-        if (who_is_bigger(my_revstr(str), my_revstr(str2)) == 2) {
+        if (compare_size(my_revstr(str), my_revstr(str2)) == 2) {
             result = subtractor(str2, str, result);
             result = change_sign(result);
         }
@@ -334,23 +334,6 @@ char *infin_add(char *str, char *str2)
     else
         result = func_call(str, str2, value1);
     return result;
-}
-
-int my_compute_power_it(int nb , int p)
-{
-    int res = nb;
-    int tmp = p;
-
-    if (tmp < 0)
-        return 0;
-    if (tmp == 0)
-        return 1;
-    for (; tmp > 1; tmp--) {
-        if (INT_MAX / res <= nb && INT_MAX / res > 0)
-            return 0;
-        res = nb * res;
-    }
-    return res;
 }
 
 char *multiplier(char *str, char *str2, char *result)
@@ -499,7 +482,7 @@ char *divide_string(char *str, char *str2)
     char *new_string;
     unsigned int len = strlen(str2);
 
-    if (who_is_bigger(str, str2) == 2)
+    if (compare_size(str, str2) == 2)
         return "0";
     if ((new_string = malloc(len + 2)) == NULL) {
         printf("Memory allocation failed");
@@ -522,7 +505,7 @@ char *recup_string(char *str, char *str2)
     int i;
     unsigned int len = strlen(str2);
 
-    if (who_is_bigger(str, str2) == 2)
+    if (compare_size(str, str2) == 2)
         return NULL;
     for (unsigned int i = 0; i < len; i++)
         if (str[i] < str2[i]) {
@@ -539,7 +522,7 @@ char *recup_string(char *str, char *str2)
 
 char *sub_loop2(char *str, char *str2)
 {
-    while (strcmp(str, "0") != 0 && who_is_bigger(str, str2) == 1)
+    while (strcmp(str, "0") != 0 && compare_size(str, str2) == 1)
         str = infin_sub(str, str2);
     return str;
 }
@@ -548,24 +531,11 @@ char *sub_loop(char *str, char *str2)
 {
     char *count;
 
-    for (count = "0"; strcmp(str, "0") != 0 && who_is_bigger(str, str2) == 1;
+    for (count = "0"; strcmp(str, "0") != 0 && compare_size(str, str2) == 1;
          count = infin_add(count, "1")) {
         str = infin_sub(str, str2);
     }
     return count;
-}
-
-char *init_nb3(char *str)
-{
-    char *nb3;
-
-    if ((nb3 = malloc(strlen(str) + 1)) == NULL) {
-        printf("Memory allocation failed.");
-        exit(84);
-    }
-    for (unsigned int i = 0; i < strlen(str); i++)
-        nb3[i] = str[i];
-    return nb3;
 }
 
 char *if_zero(char *result, char *str, char *str2, char *init)
@@ -588,7 +558,7 @@ char *big_numbers(char *nb1, char *nb2, char *result)
     char *rest;
     char *tmp;
 
-    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1 && strcmp
+    while (strcmp(nb1, "0") != 0 && compare_size(nb1, nb2) == 1 && strcmp
            (infin_mult(result, nb2), init) != 0)
     {
         tmp = divide_string(nb1, nb2);
@@ -650,7 +620,7 @@ char *calc_modulo(char *nb1, char *nb2, char *result)
     char *rest;
     char *tmp;
 
-    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1 && strcmp
+    while (strcmp(nb1, "0") != 0 && compare_size(nb1, nb2) == 1 && strcmp
            (infin_mult(result, nb2), init) != 0)
     {
         tmp = divide_string(nb1, nb2);
@@ -903,14 +873,6 @@ char *calc_parentheses(char *result, char *str, int start, int end)
             i = 0;
         }
     return result;
-}
-
-int analyse_parentheses(char *str)
-{
-    for (int i = 0; str[i] != '\0'; i++)
-        if (str[i] == '(')
-            return 1;
-    return 0;
 }
 
 char *parentheses_loop(char *str)

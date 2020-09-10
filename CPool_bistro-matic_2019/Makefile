@@ -16,11 +16,11 @@ SRC	=	main.c		\
 		eval_expr.c	\
 		product.c	\
 		modulo.c		\
-		src/my_compute_power_it.c	\
 		src/clear_string.c	\
 		division.c		\
 		src/power_of_ten.c	\
 		infin_sub.c		\
+		src/analyse_string.c	\
 
 OBJ	=       $(SRC:.c=.o)
 

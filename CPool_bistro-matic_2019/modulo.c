@@ -6,7 +6,7 @@ char *calc_modulo(char *nb1, char *nb2, char *result)
     char *rest;
     char *tmp;
 
-    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1 && strcmp
+    while (strcmp(nb1, "0") != 0 && compare_size(nb1, nb2) == 1 && strcmp
            (infin_mult(result, nb2), init) != 0)
     {
         tmp = divide_string(nb1, nb2);

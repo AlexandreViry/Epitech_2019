@@ -5,7 +5,7 @@ char *divide_string(char *str, char *str2)
     char *new_string;
     unsigned int len = strlen(str2);
 
-    if (who_is_bigger(str, str2) == 2)
+    if (compare_size(str, str2) == 2)
         return "0";
     if ((new_string = malloc(len + 2)) == NULL) {
         printf("Memory allocation failed");
@@ -28,7 +28,7 @@ char *recup_string(char *str, char *str2)
     int i;
     unsigned int len = strlen(str2);
 
-    if (who_is_bigger(str, str2) == 2)
+    if (compare_size(str, str2) == 2)
         return NULL;
     for (unsigned int i = 0; i < len; i++)
         if (str[i] < str2[i]) {
@@ -45,7 +45,7 @@ char *recup_string(char *str, char *str2)
 
 char *sub_loop2(char *str, char *str2)
 {
-    while (strcmp(str, "0") != 0 && who_is_bigger(str, str2) == 1)
+    while (strcmp(str, "0") != 0 && compare_size(str, str2) == 1)
         str = infin_sub(str, str2);
     return str;
 }
@@ -54,24 +54,11 @@ char *sub_loop(char *str, char *str2)
 {
     char *count;
 
-    for (count = "0"; strcmp(str, "0") != 0 && who_is_bigger(str, str2) == 1;
+    for (count = "0"; strcmp(str, "0") != 0 && compare_size(str, str2) == 1;
          count = infin_add(count, "1")) {
         str = infin_sub(str, str2);
     }
     return count;
-}
-
-char *init_nb3(char *str)
-{
-    char *nb3;
-
-    if ((nb3 = malloc(strlen(str) + 1)) == NULL) {
-        printf("Memory allocation failed.");
-        exit(84);
-    }
-    for (unsigned int i = 0; i < strlen(str); i++)
-        nb3[i] = str[i];
-    return nb3;
 }
 
 char *if_zero(char *result, char *str, char *str2, char *init)
@@ -94,7 +81,7 @@ char *big_numbers(char *nb1, char *nb2, char *result)
     char *rest;
     char *tmp;
 
-    while (strcmp(nb1, "0") != 0 && who_is_bigger(nb1, nb2) == 1 && strcmp
+    while (strcmp(nb1, "0") != 0 && compare_size(nb1, nb2) == 1 && strcmp
            (infin_mult(result, nb2), init) != 0)
     {
         tmp = divide_string(nb1, nb2);
