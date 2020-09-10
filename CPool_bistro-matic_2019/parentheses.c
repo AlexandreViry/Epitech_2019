@@ -10,7 +10,8 @@ char *create_new_str(char *str, unsigned int start)
         new_string = malloc(start + 2);
     for (unsigned int tmp = 0; tmp < start; tmp++)
         new_string[tmp] = str[tmp];
-    if (new_string[start - 1] >= '0' && new_string[start - 1] < '9')
+    if ((new_string[start - 1] >= '0' && new_string[start - 1] < '9') ||
+        new_string[start - 1] == '(' || new_string[start - 1] ==')')
         new_string[start] = '*';
     else
         new_string[start] = '\0';
@@ -28,7 +29,7 @@ char *end_of_str(char *str, int end)
     new_string = malloc(strlen(str) - end + 1);
     for (; str[end] != '\0' ; nb++, end++)
         new_string[nb] = str[end];
-    new_string[nb + 1] = '\0';
+    new_string[nb] = '\0';
     return new_string;
 }
 
@@ -38,10 +39,12 @@ char *calc_parentheses(char *result, char *str, int start, int end)
 
     for (tmp = 0; start < end; tmp++, start++)
         result[tmp] = str[start];
-    result[tmp + 1] = '\0';
+    result[tmp] = '\0';
     for (int i = 0; result[i] != '\0'; i++)
-        if (result[i] > '9' || result[i] < '0')
-        result = eval_expr(result);
+        if (result[i] > '9' || result[i] < '0') {
+            result = eval_expr(result);
+            i = 0;
+        }
     return result;
 }
 
@@ -53,7 +56,7 @@ int analyse_parentheses(char *str)
     return 0;
 }
 
-char *parentheses_loop(char *str, int count)
+char *parentheses_loop(char *str)
 {
     char *result;
     char *new_string;
@@ -71,7 +74,7 @@ char *parentheses_loop(char *str, int count)
                     start = end;
                     i = 0;
                 }
-            result = malloc(end - start + 1);
+            result = malloc(end - start);
             result = calc_parentheses(result, str, start + 1, end);
             new_string = create_new_str(str, start);
             result = my_strcat(new_string, result);
@@ -93,6 +96,6 @@ char *parentheses(char *str)
     }
     if (count == 0)
         return str;
-    result = parentheses_loop(str, count);
+    result = parentheses_loop(str);
     return result;
 }
