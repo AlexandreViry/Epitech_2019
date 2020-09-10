@@ -12,20 +12,23 @@ char **malloc_array(char *init, int count, int len)
                 i++;
             count++;
         }
-        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0')
+        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0') {
+            while ((init[i] < '0' || init[i] > '9') && init[i] != '\0')
+                i++;
             count++;
+            i--;
+        }
     }
     result = malloc(sizeof(char *) * (count + 1));
     for (int i = 0; i < count; i++) {
-        if (init[tmp] >= '0' && init[tmp] <= '9' && init[tmp] != '\0')
-            for (tmp2 = 0; init[tmp] > 47 && init[tmp] < 58 &&
+        if ((init[tmp] >= '0' || init[tmp] <= '9') && init[tmp] != '\0')
+            for (tmp2 = 0; (init[tmp] > 47 || init[tmp] < 58) &&
                      init[tmp] != '\0'; tmp2++, tmp++);
-        if (init[tmp] < '0' && init[tmp] > '9' && init[tmp] != '\0')
-            for (tmp2 = 0; init[tmp] < 48 && init[tmp] > 57 &&
+        if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0')
+            for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
                      init[tmp] != '\0'; tmp2++, tmp++);
         result[i] = malloc(tmp2 + 1);
     }
-    result[count] = NULL;
     return result;
 }
 
@@ -40,24 +43,29 @@ char **fill_array(char **result, char *init, int count, int len)
                 i++;
             count++;
         }
-        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0')
+        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0') {
+            while ((init[i] < '0' || init[i] > '9') && init[i] != '\0')
+                i++;
             count++;
+            i--;
+        }
     }
     for (int i = 0; i < count; i++) {
         if (init[tmp] >= '0' && init[tmp] <= '9' && init[tmp] != '\0') {
             for (tmp2 = 0; init[tmp] > 47 && init[tmp] < 58 &&
-                     init[tmp] != '\0'; tmp2++, tmp++)
+                    init[tmp] != '\0'; tmp2++, tmp++)
                 result[i][tmp2] = init[tmp];
-            result[i][tmp2 + 1] = '\0';
+            result[i][tmp2] = '\0';
             i++;
         }
         if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0') {
             for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
-                     init[tmp] != '\0'; tmp2++, tmp++)
+                    init[tmp] != '\0'; tmp2++, tmp++)
                 result[i][tmp2] = init[tmp];
-            result[i][tmp2 + 1] = '\0';
+            result[i][tmp2] = '\0';
         }
     }
+    result[count] = NULL;
     return result;
 }
 

@@ -12,6 +12,7 @@ SRC	=	main.c		\
 		my_str_to_word_array.c	\
 		src/my_revstr.c	\
 		parentheses.c	\
+		src/my_strcat.c	\
 		eval_expr.c	\
 		product.c	\
 		modulo.c		\

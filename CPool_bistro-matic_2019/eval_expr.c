@@ -97,15 +97,81 @@ char **priority_loop(char **tmp)
     return tmp;
 }
 
+char **new_negative_array(char **tmp)
+{
+    char **new;
+    int len;
+    int nb = 0;
+    int y = 0;
+
+    for (len = 0; tmp[len] != NULL; len++);
+    new = malloc(sizeof(char *) * (len + 1));
+    for (int i = 0; i < len; i++, nb++)
+        new[nb] = malloc(strlen(tmp[i]) + 2);
+    for (int i = 0; i < len; i++) {
+        strcpy(new[i], tmp[i]);
+        if ((tmp[i][0] > '9' || tmp[i][0] < '0') &&
+            tmp[i][1] == '-' && tmp[i + 1] != NULL) {
+            new[i][1] = '\0';
+            new[i + 1][0] = '-';
+            for (y = 0; tmp[i + 1][y] != '\0'; y++)
+                new[i + 1][y + 1] = tmp[i + 1][y];
+            new[i + 1][y + 1] = '\0';
+            i++;
+        }
+    }
+    new[len] = NULL;
+    return new;
+}
+
+char **negative_string(char **tmp, int i)
+{
+    char **res;
+
+    for (int count = 0; count < i - 1; count++) {
+        if ((tmp[count][0] > '9' || tmp[count][0] < '0') &&
+            tmp[count][1] == '-') {
+            res = new_negative_array(tmp);
+            free_array(tmp);
+            return res;
+        }
+    }
+    return tmp;
+}
+
+char **first_char_is_negative(char **tmp, int len)
+{
+    char **result;
+    int nb = 1;
+
+    if (tmp[0][0] != '-')
+        return tmp;
+    result = malloc(sizeof(char *) * (len));
+    result[0] = malloc(strlen(tmp[0]) + strlen(tmp[1]) + 1);
+    for (int i = 2; i < len && tmp[i] != NULL; i++, nb++)
+        result[nb] = malloc(strlen(tmp[i]) + 1);
+    nb = 1;
+    result[0] = my_strcat(tmp[0], tmp[1]);
+    for (int i = 2; i < len; i++, nb++)
+        strcpy(result[nb], tmp[i]);
+    result[len - 1] = NULL;
+    free(tmp);
+    return result;
+}
+
 char *eval_expr(char *init)
 {
     int i;
-    char **tmp = my_str_to_word_array(init);
+    char **tmp;
     char *result;
 
+    init = parentheses(init);
+    tmp = my_str_to_word_array(init);
     for (i = 0; tmp[i] != NULL; i++);
     if ( i == 3)
         return parse(tmp[0], tmp[1], tmp[2]);
+    tmp = first_char_is_negative(tmp, i);
+    tmp = negative_string(tmp, i);
     tmp = priority_loop(tmp);
     tmp = basic_op(tmp);
     result = malloc(strlen(tmp[0]) + 1);

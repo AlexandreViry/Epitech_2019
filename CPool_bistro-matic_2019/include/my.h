@@ -43,3 +43,4 @@ char *negativity(char *str, char *str2);
 char *parentheses(char *str);
 char *eval_expr(char *init);
 char **my_str_to_word_array(char *init);
+char *my_strcat(char *dest, char *src);

@@ -7,6 +7,100 @@
 #define ATN(c) (c - '0')
 #define NTA(n) (n + '0')
 
+char *my_strcat (char *dest, char const *src) {
+
+    int size_src = strlen(src);
+    int size_dest = strlen(dest);
+    int end_of_line = size_src + size_dest + 1;
+    char *res = malloc(end_of_line);
+    int tmp = 0;
+
+    for (int i = 0; i < size_dest; i++)
+        res[i] = dest[i];
+    for (int i = size_dest; src[tmp] != '\0'; i++, tmp++)
+        res[i] = src[tmp];
+    res[end_of_line - 1] = '\0';
+    return(res);
+}
+
+char **malloc_array(char *init, int count, int len)
+{
+    char **result;
+    int tmp = 0;
+    int tmp2 = 0;
+
+    for (int i = 0; i < len; i++) {
+        if (init[i] >= '0' && init[i] <= '9' && init[i] != '\0') {
+            while (init[i] >= '0' && init[i] <= '9' && init[i] != '\0')
+                i++;
+            count++;
+        }
+        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0') {
+            while (init[i] < '0' || init[i] > '9' && init[i] != '\0')
+                i++;
+            count++;
+            i--;
+        }
+    }
+    result = malloc(sizeof(char *) * (count + 1));
+    for (int i = 0; i < count; i++) {
+        if ((init[tmp] >= '0' || init[tmp] <= '9') && init[tmp] != '\0')
+            for (tmp2 = 0; (init[tmp] > 47 || init[tmp] < 58) &&
+                     init[tmp] != '\0'; tmp2++, tmp++);
+        if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0')
+            for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
+                     init[tmp] != '\0'; tmp2++, tmp++);
+        result[i] = malloc(tmp2 + 1);
+    }
+    return result;
+}
+
+char **fill_array(char **result, char *init, int count, int len)
+{
+    int tmp = 0;
+    int tmp2 = 0;
+
+    for (int i = 0; i < len; i++) {
+        if (init[i] >= '0' && init[i] <= '9' && init[i] != '\0') {
+            while (init[i] >= '0' && init[i] <= '9' && init[i] != '\0')
+                i++;
+            count++;
+        }
+        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0') {
+            while (init[i] < '0' || init[i] > '9' && init[i] != '\0')
+                i++;
+            count++;
+            i--;
+        }
+    }
+    printf("%d\n", count);
+    for (int i = 0; i < count; i++) {
+        if (init[tmp] >= '0' && init[tmp] <= '9' && init[tmp] != '\0') {
+            for (tmp2 = 0; init[tmp] > 47 && init[tmp] < 58 &&
+                    init[tmp] != '\0'; tmp2++, tmp++)
+                result[i][tmp2] = init[tmp];
+            result[i][tmp2] = '\0';
+            i++;
+        }
+        if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0') {
+            for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
+                    init[tmp] != '\0'; tmp2++, tmp++)
+                result[i][tmp2] = init[tmp];
+            result[i][tmp2] = '\0';
+        }
+    }
+    result[count] = NULL;
+    return result;
+}
+
+char **my_str_to_word_array(char *init)
+{
+    char **result = malloc_array(init, 0, strlen(init));
+
+    result = fill_array(result, init, 0, strlen(init));
+    return result;
+}
+
 char *power_of_ten(int i)
 {
     char *res = malloc(i + 2);
@@ -218,15 +312,11 @@ char *func_call(char *str, char *str2, int len)
 {
     char *result = malloc(len + 2);
 
-    str = my_revstr(str);
-    str2 = my_revstr(str2);
-    if (strlen(str) > 1 && strlen(str2) > 2) {
-        if (str2[strlen(str2) - 1] == '-' && str[strlen(str) - 1] == '-')
-            return double_negative(str, str2, result);
-        else if (str2[strlen(str2) - 1] == '-' || str[strlen(str) - 1] == '-')
-            return negative(str, str2, result);
-    }
-    result = calculator(str, str2, result);
+    if (str2[0] == '-' && str[0] == '-')
+        return double_negative(str, str2, result);
+    else if (str2[0] == '-' || str[0] == '-')
+        return negative(my_revstr(str), my_revstr(str2), result);
+    result = calculator(my_revstr(str), my_revstr(str2), result);
     return result;
 }
 
@@ -607,58 +697,242 @@ char *infin_mod(char *str, char *str2)
     return result;
 }
 
+char *parse(char *str1, char *str2, char *str3)
+{
+    switch (str2[0]) {
+    case '+' :
+        return (infin_add(str1, str3));
+    case '-' :
+        return (infin_sub(str1, str3));
+    case '*':
+        return (infin_mult(str1, str3));
+    case '/':
+        return (infin_div(str1, str3));
+    case '%':
+        return (infin_mod(str1, str3));
+    }
+    return str1;
+}
+
+void free_array(char **array)
+{
+    for (int i = 0; array[i] != NULL; i++)
+        free(array[i]);
+}
+
+void display_array(char **array)
+{
+    for(int i = 0; array[i] != NULL; i++)
+        printf("%s", array[i]);
+    printf("\n");
+}
+
+char **calc_priority(char **tmp, int count)
+{
+    char **new_array;
+    int i;
+    int y;
+
+    for (i = 0; tmp[i] != NULL; i++);
+    new_array = malloc(sizeof(char *) * (i - 1));
+    for (y = 0; y < count - 1; y++)
+        new_array[y] = tmp[y];
+    new_array[count - 1] = parse(tmp[count - 1], tmp[count], tmp[count + 1]);
+    for (count += 2; count < i; count++, y++)
+        new_array[y + 1] = tmp[count];
+    new_array[y + 1] = NULL;
+    return new_array;
+}
+
+char **basic_op(char **tmp)
+{
+    int count;
+
+    for (count = 0; tmp[count] != NULL; count++) {
+        switch (tmp[count][0]) {
+        case '-' :
+            if (tmp[count][1] == '\0') {
+                tmp = calc_priority(tmp, count);
+                if (tmp[count] == NULL)
+                    return tmp;
+                count = 0;
+            }
+            continue;
+        case '+' :
+            if (tmp[count][1] == '\0') {
+                tmp = calc_priority(tmp, count);
+                if (tmp[count] == NULL)
+                    return tmp;
+                count = 0;
+            }
+            continue;
+        }
+    }
+    return tmp;
+}
+
+char **priority_loop(char **tmp)
+{
+    int count;
+
+    for (count = 0; tmp[count] != NULL; count++) {
+        switch (tmp[count][0]) {
+        case '*' :
+            tmp = calc_priority(tmp, count);
+            count = 0;
+            continue;
+        case '/' :
+            tmp = calc_priority(tmp, count);
+            count = 0;
+            continue;
+        case '%':
+            tmp = calc_priority(tmp, count);
+            count = 0;
+            continue;
+        }
+    }
+    return tmp;
+}
+
+char **new_negative_array(char **tmp, int count)
+{
+    char **new;
+    int len;
+    int nb = 0;
+    int y = 0;
+
+    for (len = 0; tmp[len] != NULL; len++);
+    new = malloc(sizeof(char *) * (len + 1));
+    for (int i = 0; i < len; i++, nb++)
+        new[nb] = malloc(strlen(tmp[i]) + 2);
+    for (int i = 0; i < len; i++) {
+        strcpy(new[i], tmp[i]);
+        if ((tmp[i][0] > '9' || tmp[i][0] < '0') &&
+            tmp[i][1] == '-' && tmp[i + 1] != NULL) {
+            new[i][1] = '\0';
+            new[i + 1][0] = '-';
+            for (y = 0; tmp[i + 1][y] != '\0'; y++)
+                new[i + 1][y + 1] = tmp[i + 1][y];
+            new[i + 1][y + 1] = '\0';
+            i++;
+        }
+    }
+    new[len] = NULL;
+    return new;
+}
+
+char **negative_string(char **tmp, int i)
+{
+    char **res;
+
+    for (int count = 0; count < i - 1; count++) {
+        if ((tmp[count][0] > '9' || tmp[count][0] < '0') &&
+            tmp[count][1] == '-') {
+            res = new_negative_array(tmp, count);
+            free_array(tmp);
+            return res;
+        }
+    }
+    return tmp;
+}
+
+char **first_char_is_negative(char **tmp, int len)
+{
+    char **result;
+    int nb = 1;
+
+    if (tmp[0][0] != '-')
+        return tmp;
+    result = malloc(sizeof(char *) * (len));
+    result[0] = malloc(strlen(tmp[0]) + strlen(tmp[1]) + 1);
+    for (int i = 2; i < len && tmp[i] != NULL; i++, nb++)
+        result[nb] = malloc(strlen(tmp[i]) + 1);
+    nb = 1;
+    result[0] = my_strcat(tmp[0], tmp[1]);
+    for (int i = 2; i < len; i++, nb++)
+        strcpy(result[nb], tmp[i]);
+    result[len - 1] = NULL;
+    free(tmp);
+    return result;
+}
+
+char *eval_expr(char *init)
+{
+    int i;
+    char **tmp = my_str_to_word_array(init);
+    char *result;
+
+    for (i = 0; tmp[i] != NULL; i++);
+    if ( i == 3)
+        return parse(tmp[0], tmp[1], tmp[2]);
+    tmp = first_char_is_negative(tmp, i);
+    tmp = negative_string(tmp, i);
+    tmp = priority_loop(tmp);
+    tmp = basic_op(tmp);
+    result = malloc(strlen(tmp[0]) + 1);
+    result = strcpy(result, tmp[0]);
+    free_array(tmp);
+    return result;
+}
+
 int main(void)
 {
     int res;
     char *result;
 
-    result = infin_mod("13", "2");
+    result = eval_expr("13%2");
     res = strcmp(result, "1");
     //@ assert res == 0;
-    result = infin_mod("500", "30");
+    result = eval_expr("500%30");
     res = strcmp(result, "20");
     //@ assert res == 0;
-    result = infin_mod("-13", "2");
+    result = eval_expr("-13%2");
     res = strcmp(result, "-1");
     //@ assert res == 0;
-    result = infin_div("-100", "10");
+    result = eval_expr("-100/10");
     res = strcmp(result, "-10");
     //@ assert res == 0;
-    result = infin_div("-200", "-2");
+    result = eval_expr("-200/-2");
     res = strcmp(result, "100");
     //@ assert res == 0;
-    result = infin_div("0", "5000");
+    result = eval_expr("0/5000");
     res = strcmp(result, "0");
     //@ assert res == 0;
-    result = infin_div("9500", "5000");
+    result = eval_expr("9500/5000");
     res = strcmp(result, "1");
     //@ assert res == 0;
-    result = infin_div("95000", "531");
+    result = eval_expr("95000/531");
     res = strcmp(result, "178");
     //@ assert res == 0;
-    result = infin_mult("950", "5000");
+    result = eval_expr("950*5000");
     res = strcmp(result, "4750000");
     //@ assert res == 0;
-    result = infin_mult("-2", "-6");
+    result = eval_expr("-2*-6");
     res = strcmp(result, "12");
     //@ assert res == 0;
-    result = infin_mult("-765489", "11000653");
+    result = eval_expr("-765489*11000653");
     res = strcmp(result, "-8420878864317");
     //@ assert res == 0;
-    result = infin_sub("0", "0");
+    result = eval_expr("0-0");
     res = strcmp(result, "0");
     //@ assert res == 0;
-    result = infin_sub("-950", "-5000");
+    result = eval_expr("-950--5000");
     res = strcmp(result, "4050");
     //@ assert res == 0;
-    result = infin_sub("-760", "900");
+    result = eval_expr("-760-900");
     res = strcmp(result, "-1660");
     //@ assert res == 0;
-    result = infin_sub("8524", "5846");
+    result = eval_expr("8524-5846");
     res = strcmp(result, "2678");
     //@ assert res == 0;
-    result = infin_sub("7854", "25");
+    result = eval_expr("7854-25");
     res = strcmp(result, "7829");
+    //@ assert res == 0;
+    result = eval_expr("779865-9865854258*2+55500-1");
+    res = strcmp(result, "-19730873152");
+    //@ assert res == 0;
+    result = eval_expr("779865-9865854258*2+55500-1500+1580000*150284");
+    res = strcmp(result, "217717845349");
     //@ assert res == 0;
     return 0;
 }
