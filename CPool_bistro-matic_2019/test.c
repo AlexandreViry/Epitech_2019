@@ -7,6 +7,8 @@
 #define ATN(c) (c - '0')
 #define NTA(n) (n + '0')
 
+char *eval_expr(char *init);
+
 char *my_strcat (char *dest, char const *src) {
 
     int size_src = strlen(src);
@@ -884,7 +886,7 @@ char *end_of_str(char *str, int end)
     new_string = malloc(strlen(str) - end + 1);
     for (; str[end] != '\0' ; nb++, end++)
         new_string[nb] = str[end];
-    new_string[nb + 1] = '\0';
+    new_string[nb] = '\0';
     return new_string;
 }
 
@@ -894,10 +896,12 @@ char *calc_parentheses(char *result, char *str, int start, int end)
 
     for (tmp = 0; start < end; tmp++, start++)
         result[tmp] = str[start];
-    result[tmp + 1] = '\0';
+    result[tmp] = '\0';
     for (int i = 0; result[i] != '\0'; i++)
-        if (result[i] > '9' || result[i] < '0')
-        result = eval_expr(result);
+        if (result[i] > '9' || result[i] < '0') {
+            result = eval_expr(result);
+            i = 0;
+        }
     return result;
 }
 
@@ -927,7 +931,7 @@ char *parentheses_loop(char *str)
                     start = end;
                     i = 0;
                 }
-            result = malloc(end - start + 1);
+            result = malloc(end - start);
             result = calc_parentheses(result, str, start + 1, end);
             new_string = create_new_str(str, start);
             result = my_strcat(new_string, result);
@@ -1032,6 +1036,15 @@ int main(void)
     //@ assert res == 0;
     result = eval_expr("779865-9865854258*2+55500-1500+1580000*150284");
     res = strcmp(result, "217717845349");
+    //@ assert res == 0;
+    result = eval_expr("16+25(36+1*2)+(4+(2*6))(3*3)");
+    res = strcmp(result, "1110");
+    //@ assert res == 0;
+    result = eval_expr("10");
+    res = strcmp(result, "10");
+    //@ assert res == 0;
+    result = eval_expr("-17*8(15-3)");
+    res = strcmp(result, "-1632");
     //@ assert res == 0;
     return 0;
 }
