@@ -853,7 +853,11 @@ char *end_of_str(char *str, int end)
 
     if (str[end] == '\0')
         return "\0";
-    new_string = malloc(strlen(str) - end + 1);
+    new_string = malloc(strlen(str) - end + 2);
+    if (end > 0 && str[end - 1] == ')' && str[end + 1] != '(') {
+        nb = 1;
+        new_string[0] = '*';
+    }
     for (; str[end] != '\0' ; nb++, end++)
         new_string[nb] = str[end];
     new_string[nb] = '\0';

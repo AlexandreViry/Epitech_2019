@@ -18,7 +18,8 @@ char *analyse_string(char *str)
         c = str[i];
         if (c != '-' && c != '+' && c != '*' && c != '/' && c != '%'
             && c != '(' && c != ')' && (c > '9' || c < '0') && c != '\0') {
-            printf("Syntax Error.\n");
+            printf("Syntax Error: only integers and");
+            printf(" basic operators are allowed.\n");
             return NULL;
         }
     }
