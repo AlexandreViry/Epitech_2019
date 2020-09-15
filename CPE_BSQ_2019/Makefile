@@ -5,27 +5,26 @@
 ## a
 ##
 
-SRC	=	./lib/my/my_putchar.c	\
-		./lib/my/my_put_nbr.c	\
-		./BSQ.c
+SRC =	bsq.c		\
+	my_str_to_word_array.c	\
 
-OBJ     =       $(SRC:.c=.o)
+OBJ = $(SRC:.c=.o)
 
-NAME    =       BSQ
+NAME = BSQ
 
-all:    lib $(NAME) 
+all: $(NAME)
 
-CPPFLAG: -Wall -Wextra -Iinclude 
+CPPFLAG: -Wall -Wextra -Iinclude
 
 $(NAME):        $(OBJ)
-	gcc BSQ.c -o $(NAME) $(CPPFLAG)
+	gcc $(CPPFLAG) $(SRC) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)
 	clear
 
-fclean:		clean
+fclean:
+	rm -f $(OBJ)
 	rm -f $(NAME)
-	clear
 
 re:     fclean all

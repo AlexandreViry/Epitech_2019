@@ -5,8 +5,13 @@
 ** macro with all prototypes
 */
 
-void my_putchar(char c);
-int my_put_nbr(int nb);
-int my_putstr(char const *str);
-int my_strlen(char const *str);
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
+#include <fcntl.h>
+
 char *my_revstr(char *str);
+char **my_str_to_word_array(char *str, char c);
