@@ -7,6 +7,7 @@
 
 SRC =	bsq.c		\
 	my_str_to_word_array.c	\
+	init_map.c	\
 
 OBJ = $(SRC:.c=.o)
 
@@ -17,7 +18,7 @@ all: $(NAME)
 CPPFLAG: -Wall -Wextra -Iinclude
 
 $(NAME):        $(OBJ)
-	gcc $(CPPFLAG) $(SRC) -o $(NAME)
+	gcc -g3 $(CPPFLAG) $(SRC) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)

@@ -2,73 +2,50 @@
 ** EPITECH PROJECT, 2019
 ** BSQ
 ** File description:
-** display the biggest
+** display the biggest square
 */
 
 #include "include/my.h"
 
-typedef struct map {
-    char *map;
-    int **map_int;
-    int size;
-} map_t;
-
-void map_without_size(map_t **map)
+int search_zero_for_square(map_t *map, int y, int x)
 {
-    char *tmp = malloc(strlen((*map)->map) + 1);
-    int len = strlen((*map)->map);
-    int count;
+    int count = 1;
+    int i = 0;
 
-    strcpy(tmp, (*map)->map);
-    for (count = 0; (*map)->map[count] != '\n'; count++);
-    count++;
-    len = len - count;
-    (*map)->map = malloc(len + 1);
-    for (int i = 0; tmp[count] != '\0'; count++, i++)
-        (*map)->map[i] = tmp[count];
-    (*map)->map[len - 1] = '\0';
+    if (x >= map->size_length && y >= map->size_height - 1)
+        return -1;
+    if (map->map_int[y][x] == 0)
+            return -1;
+    for (; x + i < map->size_length && y +i < map->size_height && map->map_int
+             [y + i][x] != 0 && map->map_int[y][x + i] != 0; i++, count++) {
+        for (int z = 1; z < count && y + z < map->size_height &&
+                 x + z < map->size_length; z++)
+            if (map->map_int[y + z][x + i] == 0 ||
+                map->map_int[y + i][x + z] == 0)
+                return i;
+    }
+    return i;
 }
 
-void fill_map(map_t **map)
+void make_a_square(map_t *map)
 {
     int x = 0;
     int y = 0;
 
-    for (int i = 0; (*map)->map[i] != '\0'; i++) {
-        if ((*map)->map[i] == '\n') {
-            x++;
-            y = 0;
+    map->greatest_value = 0;
+    for (int tmp = 0; y < map->size_height; x++) {
+        if (x == map->size_length) {
+            y++;
+            x = 0;
             continue;
         }
-        if ((*map)->map[i] == '.')
-            (*map)->map_int[x][y] = 1;
-        if ((*map)->map[i] == 'o')
-            (*map)->map_int[x][y] = 0;
+        if (map->map_int[y][x] == 0)
+            continue;
+        tmp = search_zero_for_square(map, y, x);
+        if (tmp > map->greatest_value)
+            map->greatest_value = tmp;
     }
-}
-
-void init_map(char **filepath, map_t *map)
-{
-    struct stat sb;
-    int fd = open(filepath[1], O_RDONLY);
-    int count = 0;
-    char **tmp;
-
-
-    fstat(fd, &sb);
-    map->map = malloc(sizeof(char) * (int)sb.st_size);
-    read(fd, map->map, sb.st_size);
-    map_without_size(&map);
-    close(fd);
-    for (int i = 0; map->map[i] != '\0'; i++)
-        if (map->map[i] == '\n')
-            count++;
-    map->map_int = malloc(sizeof(int *) * (count + 1));
-    tmp = my_str_to_word_array(map->map, '\n');
-    for (count = 0; tmp[count] != NULL; count++)
-        map->map_int[count] = malloc(sizeof(int) * (strlen(tmp[count]) + 1));
-    map->map_int[count] = NULL;
-    fill_map(&map);
+    printf("%d\n", map->greatest_value);
 }
 
 int main(int ac, char **av)
@@ -78,5 +55,11 @@ int main(int ac, char **av)
     if (ac != 2)
         return -1;
     init_map(av, &map);
+    make_a_square(&map);
+    for (int i = 0; i < map.size_height; i++) {
+        for (int y = 0; y < map.size_length - 1; y++)
+            printf("%d",map.map_int[i][y]);
+        printf("\n");
+    }
     return(0);
 }
