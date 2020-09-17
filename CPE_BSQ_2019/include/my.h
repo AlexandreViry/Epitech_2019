@@ -19,6 +19,8 @@ typedef struct map {
     int size_height;
     int size_length;
     int greatest_value;
+    int y;
+    int x;
 } map_t;
 
 char *my_revstr(char *str);
