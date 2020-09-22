@@ -6,6 +6,6 @@
 */
 
 #ifndef READ_SIZE
-#define READ_SIZE(i)
+#define READ_SIZE (100)
 #endif
 
