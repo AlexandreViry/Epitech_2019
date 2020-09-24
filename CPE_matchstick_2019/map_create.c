@@ -67,3 +67,4 @@ char **create_board_game(int n)
     init_i(board, n);
     return (board);
 }
+

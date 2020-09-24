@@ -1,20 +1,17 @@
-/*
-** EPITECH PROJECT, 2019
-** sa
-** File description:
-** swap the two first element of the l_a list
-*/
+#include "include/my.h"
 
-#include <stdlib.h>
-#include "./include/my.h"
-#include "./include/chained_list.h"
-
-int sa(Chained_list *l_a)
+char **sa(char **l_a, int draw)
 {
-    int temp = l_a->nb;
-    l_a->nb = l_a->next->nb;
-    l_a = l_a->next;
-    l_a->nb = temp;
-    my_putstr("sa ");
-    return (0);
+    int i;
+    char *tmp = l_a[0];
+
+    if (tmp == NULL || l_a[1] == NULL)
+        return l_a;
+    l_a[0] = l_a[1];
+    l_a[1] = tmp;
+    if (draw == 1)
+        printf(" sa");
+    else
+        printf("sa");
+    return l_a;
 }

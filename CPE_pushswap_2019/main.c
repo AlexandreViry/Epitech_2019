@@ -1,60 +1,78 @@
-/*
-** EPITECH PROJECT, 2019
-** main
-** File description:
-** call all the functions
-*/
+#include "include/my.h"
 
-#include "./include/my.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include "./include/chained_list.h"
-
-int ra(Chained_list **l_a);
-int sa(struct Chained_list *l_a);
-int verify(int ac, char **av);
-void pa(struct Chained_list **l_a, struct Chained_list **l_b);
-void pb(struct Chained_list **l_a, struct Chained_list **l_b);
-
-int my_put_in_list(Chained_list **list, int nb)
+char **init_list(char **l_a, char **av, int ac)
 {
-    Chained_list *element1 = malloc(sizeof(*element1));
-    element1->nb = nb;
-    element1->next = *list;
-    *list = element1;
-    return (0);
+    l_a = malloc(sizeof(char *) * ac);
+    for (int i = 0; i + 1 < ac; i++)
+        l_a[i] = malloc(strlen(av[i + 1]) + 1);
+    for (int i = 0; i + 1 < ac; i++)
+        strcpy(l_a[i], av[i + 1]);
+    l_a[ac - 1] = NULL;
+    return l_a;
 }
 
-int my_param_to_list(Chained_list **list, char **str, int ac)
+int is_it_ascending_order(char **l_a)
 {
-    for (int i = ac - 1; i != 0 ; i--) {
-        int nb = my_atoi(str[i]);
-        my_put_in_list(list, nb);
-    }
-    return (0);
+    for (int i = 0; l_a[i + 1] != NULL; i++)
+        if (atoi(l_a[i]) > atoi(l_a[i + 1]))
+            return 1;
+    return 0;
 }
 
-void my_show_list(Chained_list *list)
+char **parse_l_a(char **l_a, char **l_b)
 {
-    Chained_list *tmp = list;
-
-    while (tmp != NULL) {
-        my_put_nbr(tmp->nb);
-        my_putchar(' ');
-        tmp = tmp->next;
+    while (l_a[1] !=  NULL) {
+        if (atoi(l_a[0]) <= atoi(l_a[1]))
+            pb(l_a, l_b, 1);
+        else {
+            l_a = sa(l_a, 1);
+            pb(l_a, l_b, 1);
+        }
     }
+    while (l_b[0] != NULL)
+        pa(l_a, l_b, 1);
+    return l_a;
+}
+
+char **first_loop(char **l_a, char **l_b)
+{
+    if (is_it_ascending_order(l_a) == 0)
+        return l_a;
+    if (atoi(l_a[0]) <= atoi(l_a[1]))
+        pb(l_a, l_b, 0);
+    else {
+        l_a = sa(l_a, 0);
+        pb(l_a, l_b, 1);
+    }
+    while (is_it_ascending_order(l_a) != 0)
+        l_a = parse_l_a(l_a, l_b);
+    return l_a;
+}
+
+void display_array(char **array)
+{
+    for (int i = 0; array[i] != NULL; i++)
+        puts(array[i]);
+}
+
+void free_array(char **array)
+{
+    for (int i = 0; array[i] != NULL; i++)
+        free(array[i]);
 }
 
 int main(int ac, char **av)
 {
-    if (verify(ac, av) == 0)
-        return (0);
-    Chained_list *l_a = malloc(sizeof(*l_a));
-    l_a = NULL;
-    Chained_list *l_b = malloc(sizeof(*l_b));
-    l_b = NULL;
-    my_param_to_list(&l_a, av, ac);
-    part1(&l_a, &l_b, ac);
-    my_putchar('\n');
-    return (0);
+    char **l_a;
+    char **l_b;
+
+    if (ac <= 2)
+        return 0;
+    l_a = init_list(l_a, av, ac);
+    l_b = malloc(sizeof(char *) * ac);
+    l_b[0] = NULL;
+    l_a = first_loop(l_a, l_b);
+    free_array(l_b);
+    free_array(l_a);
+    return 0;
 }
