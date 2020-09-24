@@ -29,8 +29,14 @@ char **parse_l_a(char **l_a, char **l_b)
             pb(l_a, l_b, 1);
         }
     }
-    while (l_b[0] != NULL)
-        pa(l_a, l_b, 1);
+    while (l_b[0] != NULL) {
+        if (l_b[1] == NULL || atoi(l_b[0]) >= atoi(l_b[1]))
+            pa(l_a, l_b, 1);
+        else {
+            l_b = sb(l_b, 1);
+            pa(l_a, l_b, 1);
+        }
+    }
     return l_a;
 }
 
@@ -74,5 +80,6 @@ int main(int ac, char **av)
     l_a = first_loop(l_a, l_b);
     free_array(l_b);
     free_array(l_a);
+    printf("\n");
     return 0;
 }

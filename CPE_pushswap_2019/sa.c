@@ -15,3 +15,19 @@ char **sa(char **l_a, int draw)
         printf("sa");
     return l_a;
 }
+
+char **sb(char **l_b, int draw)
+{
+    int i;
+    char *tmp = l_b[0];
+
+    if (tmp == NULL || l_b[1] == NULL)
+        return l_b;
+    l_b[0] = l_b[1];
+    l_b[1] = tmp;
+    if (draw == 1)
+        printf(" sb");
+    else
+        printf("sb");
+    return l_b;
+}

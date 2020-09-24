@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 char **sa(char **l_a, int draw);
+char **sb(char **l_b, int draw);
 void display_array(char **array);
 void pb(char **l_a, char **l_b, int draw);
 void pa(char **l_a, char **l_b, int draw);
