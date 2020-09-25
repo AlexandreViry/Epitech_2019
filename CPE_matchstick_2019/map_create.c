@@ -37,6 +37,8 @@ char **create_border(char **board, int n)
     }
     for (int z = 0; z < width; z++)
         board[n + 1][z] = '*';
+    for (int i = 0; i <= n + 1; i++)
+        board[i][width] = '\0';
     return (board);
 }
 
@@ -63,8 +65,7 @@ char **create_board_game(int n)
     for (; i < n + 2; i++)
         board[i] = malloc(sizeof(char) * (width + 2));
     board[i] = NULL;
-    create_border(board, n);
-    init_i(board, n);
+    board = create_border(board, n);
+    board = init_i(board, n);
     return (board);
 }
-

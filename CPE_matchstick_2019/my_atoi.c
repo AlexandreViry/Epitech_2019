@@ -21,7 +21,7 @@ int my_atoi(char *str)
         nb0 = str[i] - 48;
         if (nb0 < 0 || nb0 > 9) {
             nb1 = nb1 / 10;
-            return (nb1);
+            break;
         }
         nb1 = nb1 + nb0;
         i++;
