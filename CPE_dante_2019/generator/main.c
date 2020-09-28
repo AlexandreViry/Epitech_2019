@@ -9,8 +9,13 @@
 
 char **maze_init(int lines, int column)
 {
-    char **maze = malloc(sizeof(char *) * lines);
+    char **maze;
 
+    if (lines <= 0 || column <= 0) {
+        printf("Positive integers only.");
+        exit(84);
+    }
+    maze = malloc(sizeof(char *) * lines);
     for (int i = 0; i != lines; i++)
         maze[i] = malloc(sizeof(char) * (column + 1));
     return (maze);
