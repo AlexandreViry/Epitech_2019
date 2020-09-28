@@ -11,7 +11,7 @@ SRC =	bsq.c		\
 
 OBJ = $(SRC:.c=.o)
 
-NAME = BSQ
+NAME = bsq
 
 all: $(NAME)
 

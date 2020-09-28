@@ -42,6 +42,13 @@ void fill_map(map_t **map)
     }
 }
 
+void check_buff(char *buff)
+{
+    for (int i = 3; buff[i] != '\0'; i++)
+        if (buff[i] != '\n' && buff[i] != 'o' && buff[i] != '.')
+            exit(84);
+}
+
 void init_map(char **filepath, map_t *map)
 {
     struct stat sb;
@@ -49,9 +56,13 @@ void init_map(char **filepath, map_t *map)
     int count = 0;
     char **tmp;
 
+    if (fd < 0)
+        exit(84);
     fstat(fd, &sb);
     map->map = malloc(sizeof(char) * (int)sb.st_size + 1);
-    read(fd, map->map, sb.st_size);
+    if (read(fd, map->map, sb.st_size) == -1)
+        exit(84);
+    check_buff(map->map);
     map->map[sb.st_size] = '\0';
     map_without_size(&map);
     close(fd);
