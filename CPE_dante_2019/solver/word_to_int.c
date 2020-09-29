@@ -42,10 +42,11 @@ int **word_to_int_array(char **words)
     array = malloc(sizeof(int *) * (tab_len));
     for (int i = 0;  i < (tab_len); i++)
         array[i] = malloc(sizeof(int) * string_length);
-    for (int i = 0; i < tab_len; i++) {
+    for (int i = 0; i < tab_len - 1; i++) {
         for (int j = 0; j < string_length; j++) {
             array[i][j] = make_arr_elem(words, i, j);
         }
     }
+    array[tab_len - 1] = NULL;
     return array;
 }

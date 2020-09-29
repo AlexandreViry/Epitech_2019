@@ -11,7 +11,7 @@ SRC	=	$(wildcard ./*.c)
 
 OBJ	=	$(SRC:.c=.o)
 
-CFLAGS	+= -ggdb -Wall -Wextra
+CFLAGS	+=  -ggdb -Wall -Wextra
 
 all: $(NAME)
 

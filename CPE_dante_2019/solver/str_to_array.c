@@ -14,7 +14,7 @@ int *lines(char *str)
     int lines = 0;
     int col = 0;
 
-    for (int i = 0; str[i] != '\0'; i++) {
+    for (int i = 0; i < len; i++) {
         if (str[i] == '\n')
             lines++;
     }
@@ -62,8 +62,10 @@ char **sgl_to_dbl(char *path)
     if (fd == -1)
         exit(84);
     stat(path, &sb);
-    buff = malloc(sizeof(char) * ((int)sb.st_size + 1));
-    read(fd, buff, (int)sb.st_size);
+    buff = malloc((int)sb.st_size);
+    if (read(fd, buff, (int)sb.st_size) == -1)
+        exit(84);
+    buff[(int)sb.st_size - 1] = '\0';
     size = lines(buff);
     map = map_create(buff, size);
     return (map);
