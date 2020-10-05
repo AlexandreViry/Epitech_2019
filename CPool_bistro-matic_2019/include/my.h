@@ -43,5 +43,5 @@ char *eval_expr(char *init);
 char **my_str_to_word_array(char *init);
 char *my_strcat(char *dest, char *src);
 char *clear_string(char *str);
-char *analyse_string(char *str);
+int is_valid_string(char *str);
 char *concat_strings(int ac, char **av);

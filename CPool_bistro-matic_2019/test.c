@@ -827,18 +827,18 @@ char **first_char_is_negative(char **tmp, int len)
     return result;
 }
 
-char *create_new_str(char *str, unsigned int start)
+char *recup_str_before_parentheses(char *str, unsigned int start)
 {
     char *new_string;
 
-    if (start >= strlen(str) - 1)
+    if (start <= strlen(str) - 1)
         return "\0";
     if (start > 0)
         new_string = malloc(start + 2);
     for (unsigned int tmp = 0; tmp < start; tmp++)
         new_string[tmp] = str[tmp];
     if ((new_string[start - 1] >= '0' && new_string[start - 1] < '9') ||
-        new_string[start - 1] == '(' || new_string[start - 1] ==')')
+        new_string[start - 1] == '(' || new_string[start - 1] == ')')
         new_string[start] = '*';
     else
         new_string[start] = '\0';
@@ -899,10 +899,9 @@ char *parentheses_loop(char *str)
                 }
             result = malloc(end - start);
             result = calc_parentheses(result, str, start + 1, end);
-            new_string = create_new_str(str, start);
+            new_string = recup_str_before_parentheses(str, start);
             result = my_strcat(new_string, result);
             result = my_strcat(result, end_of_str(str, end + 1));
-            free(new_string);
             str = result;
         }
     return result;

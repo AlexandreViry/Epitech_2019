@@ -10,7 +10,7 @@ char *concat_strings(int ac, char **av)
     return result;
 }
 
-char *analyse_string(char *str)
+int is_valid_string(char *str)
 {
     char c;
 
@@ -20,8 +20,8 @@ char *analyse_string(char *str)
             && c != '(' && c != ')' && (c > '9' || c < '0') && c != '\0') {
             printf("Syntax Error: only integers and");
             printf(" basic operators are allowed.\n");
-            return NULL;
+            return 1;
         }
     }
-    return str;
+    return 0;
 }

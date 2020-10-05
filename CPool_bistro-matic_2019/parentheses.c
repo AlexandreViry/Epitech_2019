@@ -1,17 +1,19 @@
 #include "include/my.h"
 
-char *create_new_str(char *str, unsigned int start)
+char *recup_str_before_parentheses(char *str, unsigned int start)
 {
     char *new_string;
 
-    if (start >= strlen(str) - 1)
+    if (start == 0)
         return "\0";
+    // la condition précédente est toujours vraie ce qui empêche de retourner ce qu'il y a avant les parentheses ou le résultat des parentheses précédentes
+    puts("coucou");
     if (start > 0)
         new_string = malloc(start + 2);
     for (unsigned int tmp = 0; tmp < start; tmp++)
         new_string[tmp] = str[tmp];
     if ((new_string[start - 1] >= '0' && new_string[start - 1] < '9') ||
-        new_string[start - 1] == '(' || new_string[start - 1] ==')')
+        new_string[start - 1] == '(' || new_string[start - 1] == ')')
         new_string[start] = '*';
     else
         new_string[start] = '\0';
@@ -59,9 +61,6 @@ char *parentheses_loop(char *str)
     int start;
     int end;
 
-    for (start = 0; str[start] != '('; start++)
-        if (str[start] == '\0')
-            return str;
     for (int i = 0; str[i] != '\0'; i++)
         if (str[i] == '(') {
             for (start = i; str[start] != '('; start++);
@@ -72,10 +71,11 @@ char *parentheses_loop(char *str)
                 }
             result = malloc(end - start);
             result = calc_parentheses(result, str, start + 1, end);
-            new_string = create_new_str(str, start);
-            result = my_strcat(new_string, result);
+            new_string = recup_str_before_parentheses(str, start);//new_string devrait récupérer les nombres avants les parentheses, sauf qu'il les supprimes, ou ne les prends juste pas en compte.
+            // la premiere valeur est effacée et remplacée par la deuxième.
+            puts(new_string);
+            result = my_strcat(new_string, result);//le strcat n'est pas bon, le malloc array ne suit plus et segfault
             result = my_strcat(result, end_of_str(str, end + 1));
-            free(new_string);
             str = result;
         }
     return result;
@@ -93,5 +93,6 @@ char *parentheses(char *str)
     if (count == 0)
         return str;
     result = parentheses_loop(str);
+    puts("salut");// la fonction parvient tout de meme à se finir avant de segfault, segfault dans la fonction my_str_to_word_array, à cause du mauvais return de cette fonction
     return result;
 }

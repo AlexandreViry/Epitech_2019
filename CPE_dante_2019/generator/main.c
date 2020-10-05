@@ -5,7 +5,7 @@
 ** generate a perfect maze
 */
 
-#include "include/my.h"
+#include "./include/my.h"
 
 char **maze_init(int lines, int column)
 {
@@ -28,13 +28,22 @@ char **maze_set(char **maze, int lines, int columns)
             maze[i][y] = 'X';
     maze[0][0] = '*';
     maze[lines - 1][columns - 1] = '*';
+    for (int i = 0; i != lines; i++)
+        maze[i][columns] = '\0';
     return (maze);
 }
 
 int main(int ac, char **av)
 {
-    char **maze = maze_init(atoi(av[2]), atoi(av[1]));
+    char **maze = maze_init(atoi(av[1]), atoi(av[2]));
+    board_t board;
 
-    maze_set(maze, atoi(av[2]), atoi(av[1]));
-    print_maze(maze, atoi(av[2]), atoi(av[1]));
+    board.length = atoi(av[2]);
+    board.hight = atoi(av[1]);
+    maze_set(maze, atoi(av[1]), atoi(av[2]));
+    from_map_top_cell_board(maze, &board);
+    generating_maze(&board);
+    print_board_with_char(board);
+    print_board(board);
+    printf("\n");
 }

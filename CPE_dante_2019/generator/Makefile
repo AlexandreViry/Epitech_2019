@@ -7,6 +7,9 @@
 
 SRC	=	main.c	\
 		print_maze.c	\
+		from_map_to_cell_board.c	\
+		generating_maze.c	\
+		contamination.c	\
 
 OBJ	=       $(SRC:.c=.o)
 
@@ -17,7 +20,7 @@ all:	$(NAME) clean
 CPPFLAG: -Wall -Wextra -Iinclude
 
 $(NAME):        $(OBJ)
-	gcc -o $(NAME) $(OBJ)
+	gcc -g3 -o $(NAME) $(OBJ)
 
 clean:
 	rm -f $(OBJ)
