@@ -8,110 +8,54 @@
 #define NTA(n) (n + '0')
 
 char *eval_expr(char *init);
+char *my_revstr(char *str);
+char *last_carry(char *result, int carry, int count);
+char *calculator(char *str, char *str2, char *result);
+char *double_negative(char *str, char *str2, char *result);
+char *infin_add(char *str, char *str2);
+char *infin_mult(char *str, char *str2);
+char *infin_sub(char *str, char *str2);
+char *infin_div(char *str, char *str2);
+char *subtractor(char *str, char *str2, char *result);
+char *change_sign(char *result);
+int compare_size(char *str, char *str2);
+char *negative(char *str, char *str2, char *result);
+char *power_of_ten(int i);
+char *div_loop(char *str, char *str2);
+char *sub_loop(char *str, char *str2);
+char *sub_loop2(char *str, char *str2);
+char *recup_string(char *str, char *str2);
+char *divide_string(char *str, char *str2);
+char *negative_to_positive2(char *str);
+char *infin_mod(char *str, char *str2);
+char *if_zero(char *result, char *str, char *str2, char *init);
+char *negativity(char *str, char *str2);
+char *parentheses(char *str);
+char *eval_expr(char *init);
+char **my_str_to_word_array(char *init);
+char *my_strcat(char *dest, char const *src);
+char *clear_string(char *str);
+int is_valid_string(char *str);
+char *concat_strings(int ac, char **av);
 
-char *my_strcat (char *dest, char const *src) {
-
-    int size_src = strlen(src);
-    int size_dest = strlen(dest);
-    int end_of_line = size_src + size_dest + 1;
-    char *res = malloc(end_of_line);
-    int tmp = 0;
-
-    for (int i = 0; i < size_dest; i++)
-        res[i] = dest[i];
-    for (int i = size_dest; src[tmp] != '\0'; i++, tmp++)
-        res[i] = src[tmp];
-    res[end_of_line - 1] = '\0';
-    return(res);
-}
-
-char **malloc_array(char *init, int count, int len)
+void malloc_error_message(char *function)
 {
-    char **result;
-    int tmp = 0;
-    int tmp2 = 0;
-
-    for (int i = 0; i < len; i++) {
-        if (init[i] >= '0' && init[i] <= '9' && init[i] != '\0') {
-            while (init[i] >= '0' && init[i] <= '9' && init[i] != '\0')
-                i++;
-            count++;
-        }
-        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0') {
-            while (init[i] < '0' || init[i] > '9' && init[i] != '\0')
-                i++;
-            count++;
-            i--;
-        }
-    }
-    result = malloc(sizeof(char *) * (count + 1));
-    for (int i = 0; i < count; i++) {
-        if ((init[tmp] >= '0' || init[tmp] <= '9') && init[tmp] != '\0')
-            for (tmp2 = 0; (init[tmp] > 47 || init[tmp] < 58) &&
-                     init[tmp] != '\0'; tmp2++, tmp++);
-        if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0')
-            for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
-                     init[tmp] != '\0'; tmp2++, tmp++);
-        result[i] = malloc(tmp2 + 1);
-    }
-    return result;
-}
-
-char **fill_array(char **result, char *init, int count, int len)
-{
-    int tmp = 0;
-    int tmp2 = 0;
-
-    for (int i = 0; i < len; i++) {
-        if (init[i] >= '0' && init[i] <= '9' && init[i] != '\0') {
-            while (init[i] >= '0' && init[i] <= '9' && init[i] != '\0')
-                i++;
-            count++;
-        }
-        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0') {
-            while (init[i] < '0' || init[i] > '9' && init[i] != '\0')
-                i++;
-            count++;
-            i--;
-        }
-    }
-    for (int i = 0; i < count; i++) {
-        if (init[tmp] >= '0' && init[tmp] <= '9' && init[tmp] != '\0') {
-            for (tmp2 = 0; init[tmp] > 47 && init[tmp] < 58 &&
-                    init[tmp] != '\0'; tmp2++, tmp++)
-                result[i][tmp2] = init[tmp];
-            result[i][tmp2] = '\0';
-            i++;
-        }
-        if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0') {
-            for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
-                    init[tmp] != '\0'; tmp2++, tmp++)
-                result[i][tmp2] = init[tmp];
-            result[i][tmp2] = '\0';
-        }
-    }
-    result[count] = NULL;
-    return result;
-}
-
-char **my_str_to_word_array(char *init)
-{
-    char **result = malloc_array(init, 0, strlen(init));
-
-    result = fill_array(result, init, 0, strlen(init));
-    return result;
+    printf("Error: memory allocation failed in function: %s.\n", function);
+    exit(-1);
 }
 
 char *power_of_ten(int i)
 {
-    char *res = malloc(i + 2);
+    char *res;
     int y;
 
-    res[0] = '1';
-    i++;
-    for (y = 1; y < i; y++)
+    if ((res = malloc(i + 2)) == NULL)
+        malloc_error_message("power_of_ten");
+    for (y = 0; y < i; y++)
         res[y] = '0';
-    res[y] = '\0';
+    res[y] = '1';
+    res[y + 1] = '\0';
+    res = my_revstr(res);
     return res;
 }
 
@@ -136,12 +80,59 @@ char *my_revstr(char *str) {
     int y = 0;
 
     len_str = strlen(str);
-    tmp = malloc(sizeof(char) * (len_str + 1));
+    if ((tmp = malloc(len_str + 1)) == NULL)
+        malloc_error_message("my_revstr");
     len_str--;
     for (; len_str >= 0; y++, len_str--)
         tmp[y] = str[len_str];
     tmp[y] = '\0';
     return tmp;
+}
+
+char *my_strcat (char *dest, char const *src) {
+
+    int size_src = strlen(src);
+    int size_dest = strlen(dest);
+    int end_of_line = size_src + size_dest + 1;
+    char *res;
+    int tmp = 0;
+
+    if ((res = malloc(end_of_line)) == NULL)
+        malloc_error_message("my_strcat");
+    for (int i = 0; i < size_dest; i++)
+        res[i] = dest[i];
+    for (int i = size_dest; src[tmp] != '\0'; i++, tmp++)
+        res[i] = src[tmp];
+    res[end_of_line - 1] = '\0';
+    return(res);
+}
+
+char *concat_strings(int ac, char **av)
+{
+    char *result;
+
+    if ((result = malloc(strlen(av[1]) + 1)) == NULL)
+        malloc_error_message("concat_strings");
+    strcpy(result, av[1]);
+    for (int i = 2; i < ac; i++)
+        result = my_strcat(result, av[i]);
+    return result;
+}
+
+int is_valid_string(char *str)
+{
+    char c;
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        c = str[i];
+        if (c != '-' && c != '+' && c != '*' && c != '/' && c != '%'
+            && c != '(' && c != ')' && (c > '9' || c < '0') && c != '\0') {
+            printf("Syntax Error: only integers and");
+            printf(" basic operators are allowed.\n");
+            return 1;
+        }
+    }
+    return 0;
 }
 
 char *last_carry(char *result, int carry, int count)
@@ -211,7 +202,6 @@ char *subtractor(char *str, char *str2, char *result)
             carry++;
         }
     }
-    result[count] = '\0';
     return negative_carry(result, carry, count);
 }
 
@@ -249,7 +239,8 @@ char *double_negative(char *str, char *str2, char *result)
     str2[strlen(str2) - 1] = '\0';
     result = calculator(str, str2, result);
     len = strlen(result);
-    result2 = malloc(len + 2);
+    if ((result2 = malloc(len + 2)) == NULL)
+        malloc_error_message("double_negative");
     result2[0] = '-';
     for (i = 1; result[i] != '\0'; i++)
         result2[i] = result[i - 1];
@@ -276,9 +267,11 @@ int compare_size(char *str, char *str2)
 
 char *change_sign(char *result)
 {
-    char *res = malloc(strlen(result) + 2);
+    char *res;
     int i;
 
+    if ((res = malloc(strlen(result) + 2)) == NULL)
+        malloc_error_message("change_sign");
     res[0] = '-';
     for (i = 0; result[i] != '\0'; i++)
         res[i + 1] = result[i];
@@ -311,13 +304,19 @@ char *negative(char *str, char *str2, char *result)
 
 char *func_call(char *str, char *str2, int len)
 {
-    char *result = malloc(len + 2);
+    char *result;
 
-    if (str2[0] == '-' && str[0] == '-')
+    if ((result = malloc(len + 2)) == NULL)
+        malloc_error_message("func_call");
+    str = my_revstr(str);
+    str2 = my_revstr(str2);
+    if (strlen(str) == 0 || strlen(str2) == 0)
+        return calculator(str, str2, result);
+    if (str2[strlen(str2) - 1] == '-' && str[strlen(str) - 1] == '-')
         return double_negative(str, str2, result);
-    else if (str2[0] == '-' || str[0] == '-')
-        return negative(my_revstr(str), my_revstr(str2), result);
-    result = calculator(my_revstr(str), my_revstr(str2), result);
+    else if (str2[strlen(str2) - 1] == '-' || str[strlen(str) - 1] == '-')
+        return negative(str, str2, result);
+    result = calculator(str, str2, result);
     return result;
 }
 
@@ -336,84 +335,6 @@ char *infin_add(char *str, char *str2)
     return result;
 }
 
-char *multiplier(char *str, char *str2, char *result)
-{
-    int count = 0;
-    int y;
-
-    for (int i = 0; str2[i] != '\0'; i++) {
-        for (y = 0 + i; str[count] != '\0'; y++, count++) {
-            result[y] = ATN(result[y]) + ATN(str2[i]) * ATN(str[count]);
-            if (result[y] > 9) {
-                result[y + 1] = NTA(result[y] / 10) + ATN(result[y + 1]);
-                result[y] = result[y] % 10;
-            }
-            result[y] = NTA(result[y]);
-        }
-        count = 0;
-    }
-    result[y + 1] = '\0';
-    result = my_revstr(result);
-    result = clear_string(result);
-    return result;
-}
-
-char *negative_to_positive(char *str, char *str2, char *result)
-{
-    str[strlen(str) - 1] = '\0';
-    str2[strlen(str2) - 1] = '\0';
-    return multiplier(str, str2, result);
-}
-
-char *negative_product(char *str, char *str2, char *result)
-{
-    int count;
-
-    for (count = 0; str[count] != '\0'; count++)
-        if (str[count] == '-')
-            str[count] = '\0';
-    for (count = 0; str2[count] != '\0'; count++)
-        if (str2[count] == '-')
-            str2[count] = '\0';
-    result = multiplier(str, str2, result);
-    result = change_sign(result);
-    return result;
-}
-
-char *func_caller(char *str, char *str2, int len)
-{
-    char *result = malloc(len);
-
-    for (int i = 0; i < len; i++)
-        result[i] = '0';
-    result[len - 1] = '\0';
-    str = my_revstr(str);
-    str2 = my_revstr(str2);
-    if (str[strlen(str) - 1] == '-' && str2[strlen(str2) - 1] == '-')
-        return (negative_to_positive(str, str2, result));
-    if (str[strlen(str) - 1] == '-' || str2[strlen(str2) - 1] == '-')
-        return (negative_product(str, str2, result));
-    if (strlen(str) > strlen(str2))
-        return multiplier(str, str2, result);
-    result = multiplier(str2, str, result);
-    return result;
-}
-
-char *infin_mult(char *str, char *str2)
-{
-    int value1;
-    char *result;
-
-    if (strcmp(str, "0") == 0 || strcmp(str2, "0") == 0)
-        return "0";
-    value1 = strlen(str) + strlen(str2) + 3;
-    if (strlen(str) <= strlen(str2))
-        result = func_caller(str2, str, value1);
-    else
-        result = func_caller(str, str2, value1);
-    return result;
-}
-
 char *sub_negative(char *str, char *str2, char *result)
 {
     char *result2;
@@ -422,7 +343,8 @@ char *sub_negative(char *str, char *str2, char *result)
 
     result = calculator(str, str2, result);
     len = strlen(result);
-    result2 = malloc(len + 2);
+    if ((result2 = malloc(len + 2)) == NULL)
+        malloc_error_message("sub_negative");
     result2[0] = '-';
     for (i = 1; result[i] != '\0'; i++)
         result2[i] = result[i - 1];
@@ -441,8 +363,10 @@ char *check_negative(char *str, char *str2, char *result)
 
 char *sub_func_call(char *str, char *str2, int len)
 {
-    char *result = malloc(len + 2);
+    char *result;
 
+    if ((result = malloc(len + 2)) == NULL)
+        malloc_error_message("sub_func_call");
     str = my_revstr(str);
     str2 = my_revstr(str2);
     if (str2[strlen(str2) - 1] == '-' && str[strlen(str) - 1] != '-') {
@@ -477,6 +401,139 @@ char *infin_sub(char *str, char *str2)
     return result;
 }
 
+char *calc_modulo(char *nb1, char *nb2, char *result)
+{
+    char *init = nb1;
+    char *rest;
+    char *tmp;
+
+    while (strcmp(nb1, "0") != 0 && compare_size(nb1, nb2) == 1 && strcmp
+           (infin_mult(result, nb2), init) != 0)
+    {
+        tmp = divide_string(nb1, nb2);
+        result = infin_add(infin_mult(result, "10"), sub_loop(tmp, nb2));
+        rest = sub_loop2(tmp, nb2);
+        nb1 = recup_string(nb1, nb2);
+        if (nb1[0] != '0' || nb1[1] == '\0') {
+            rest = infin_mult(rest, power_of_ten(strlen(nb1)));
+            nb1 = infin_add(nb1, rest);
+        }
+        result = if_zero(result, nb1, nb2, init);
+    }
+    return nb1;
+}
+
+char *modulo_negativity(char *str, char *str2)
+{
+    if (str[0] == '-' && str2[0] == '-')
+        return calc_modulo(negative_to_positive2(str),
+                           negative_to_positive2(str2), "0");
+    if (str[0] == '-' && str2[0] != '-')
+        return change_sign(calc_modulo(negative_to_positive2(str), str2, "0"));
+    if (str[0] != '-' && str2[0] == '-')
+        return change_sign(calc_modulo(str, negative_to_positive2(str2), "0"));
+    return str;
+}
+
+char *infin_mod(char *str, char *str2)
+{
+    char *result;
+
+    if (strcmp(str, "0") == 0)
+        return "0";
+    if (strcmp(str2, "0") == 0) {
+        printf("Error: divisions by 0 are prohibited.\n");
+        exit(84);
+    }
+    if (strcmp(str, str2) == 0)
+        return "1";
+    if (str[0] == '-' || str2[0] == '-')
+        return modulo_negativity(str, str2);
+    if (strlen(str2) > strlen(str))
+        return "0";
+    result = calc_modulo(str, str2, "0");
+    return result;
+}
+
+char **malloc_array(char *init, int count, int len)
+{
+    char **result;
+    int tmp = 0;
+    int tmp2 = 0;
+
+    for (int i = 0; i < len; i++) {
+        if (init[i] >= '0' && init[i] <= '9' && init[i] != '\0') {
+            while (init[i] >= '0' && init[i] <= '9' && init[i] != '\0')
+                i++;
+            count++;
+        }
+        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0') {
+            while ((init[i] < '0' || init[i] > '9') && init[i] != '\0')
+                i++;
+            count++;
+            i--;
+        }
+    }
+    if ((result = malloc(sizeof(char *) * (count + 1))) == NULL)
+        malloc_error_message("malloc_array");
+    for (int i = 0; i < count; i++) {
+        if ((init[tmp] >= '0' || init[tmp] <= '9') && init[tmp] != '\0')
+            for (tmp2 = 0; (init[tmp] > 47 || init[tmp] < 58) &&
+                     init[tmp] != '\0'; tmp2++, tmp++);
+        if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0')
+            for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
+                     init[tmp] != '\0'; tmp2++, tmp++);
+        if ((result[i] = malloc(tmp2 + 1)) == NULL)
+            malloc_error_message("malloc_array");
+    }
+    return result;
+}
+
+char **fill_array(char **result, char *init, int count, int len)
+{
+    int tmp = 0;
+    int tmp2 = 0;
+
+    for (int i = 0; i < len; i++) {
+        if (init[i] >= '0' && init[i] <= '9' && init[i] != '\0') {
+            while (init[i] >= '0' && init[i] <= '9' && init[i] != '\0')
+                i++;
+            count++;
+        }
+        if ((init[i] < '0' || init[i] > '9') && init[i] != '\0') {
+            while ((init[i] < '0' || init[i] > '9') && init[i] != '\0')
+                i++;
+            count++;
+            i--;
+        }
+    }
+    for (int i = 0; i < count; i++) {
+        if (init[tmp] >= '0' && init[tmp] <= '9' && init[tmp] != '\0') {
+            for (tmp2 = 0; init[tmp] > 47 && init[tmp] < 58 &&
+                    init[tmp] != '\0'; tmp2++, tmp++)
+                result[i][tmp2] = init[tmp];
+            result[i][tmp2] = '\0';
+            i++;
+        }
+        if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0') {
+            for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
+                    init[tmp] != '\0'; tmp2++, tmp++)
+                result[i][tmp2] = init[tmp];
+            result[i][tmp2] = '\0';
+        }
+    }
+    result[count] = NULL;
+    return result;
+}
+
+char **my_str_to_word_array(char *init)
+{
+    char **result = malloc_array(init, 0, strlen(init));
+
+    result = fill_array(result, init, 0, strlen(init));
+    return result;
+}
+
 char *divide_string(char *str, char *str2)
 {
     char *new_string;
@@ -484,10 +541,8 @@ char *divide_string(char *str, char *str2)
 
     if (compare_size(str, str2) == 2)
         return "0";
-    if ((new_string = malloc(len + 2)) == NULL) {
-        printf("Memory allocation failed");
-        exit(84);
-    }
+    if ((new_string = malloc(len + 2)) == NULL)
+        malloc_error_message("divide_string");
     for (unsigned int i = 0; i < len; i++)
         if (str[i] < str2[i]) {
             len++;
@@ -512,7 +567,8 @@ char *recup_string(char *str, char *str2)
             len++;
             break;
         }
-    new_string = malloc(strlen(str) + 1);
+    if ((new_string = malloc(strlen(str) + 1)) == NULL)
+        malloc_error_message("recup_string");
     for (i = 0; str[len] != '\0'; i++, len++) {
         new_string[i] = str[len];
     }
@@ -549,6 +605,7 @@ char *if_zero(char *result, char *str, char *str2, char *init)
         return result;
     mult = power_of_ten(i);
     result = infin_mult(result, mult);
+    free(mult);
     return result;
 }
 
@@ -614,57 +671,188 @@ char *infin_div(char *str, char *str2)
     return result;
 }
 
-char *calc_modulo(char *nb1, char *nb2, char *result)
+char *recup_str_before_parentheses(char *str, unsigned int start)
 {
-    char *init = nb1;
-    char *rest;
-    char *tmp;
+    char *new_string;
 
-    while (strcmp(nb1, "0") != 0 && compare_size(nb1, nb2) == 1 && strcmp
-           (infin_mult(result, nb2), init) != 0)
-    {
-        tmp = divide_string(nb1, nb2);
-        result = infin_add(infin_mult(result, "10"), sub_loop(tmp, nb2));
-        rest = sub_loop2(tmp, nb2);
-        nb1 = recup_string(nb1, nb2);
-        if (nb1[0] != '0' || nb1[1] == '\0') {
-            rest = infin_mult(rest, power_of_ten(strlen(nb1)));
-            nb1 = infin_add(nb1, rest);
-        }
-        result = if_zero(result, nb1, nb2, init);
+    if (start >= strlen(str) - 1 || start == 0)
+        return "\0";
+    if (start > 0)
+        if ((new_string = malloc(start + 2)) == NULL)
+            malloc_error_message("recup_str_before_parentheses");
+    for (unsigned int tmp = 0; tmp < start; tmp++)
+        new_string[tmp] = str[tmp];
+    if ((new_string[start - 1] >= '0' && new_string[start - 1] < '9') ||
+        new_string[start - 1] == ')')
+            new_string[start] = '*';
+    else
+        new_string[start] = '\0';
+    new_string[start + 1] = '\0';
+    return new_string;
+}
+
+char *end_of_str(char *str, int end)
+{
+    unsigned int nb = 0;
+    char *new_string;
+
+    if (str[end] == '\0')
+        return "\0";
+    if ((new_string = malloc(strlen(str) - end + 2)) == NULL)
+        malloc_error_message("end_of_str");
+    if (end > 0 && str[end - 1] == ')' &&
+        str[end + 1] != '(' && str[end] != ')') {
+        nb = 1;
+        new_string[0] = '*';
     }
-    return nb1;
+    for (; str[end] != '\0' ; nb++, end++)
+        new_string[nb] = str[end];
+    new_string[nb] = '\0';
+    return new_string;
 }
 
-char *modulo_negativity(char *str, char *str2)
+char *calc_parentheses(char *result, char *str, int start, int end)
 {
-    if (str[0] == '-' && str2[0] == '-')
-        return calc_modulo(negative_to_positive2(str),
-                           negative_to_positive2(str2), "0");
-    if (str[0] == '-' && str2[0] != '-')
-        return change_sign(calc_modulo(negative_to_positive2(str), str2, "0"));
-    if (str[0] != '-' && str2[0] == '-')
-        return change_sign(calc_modulo(str, negative_to_positive2(str2), "0"));
-    return str;
+    int tmp;
+
+    for (tmp = 0; start < end; tmp++, start++)
+        result[tmp] = str[start];
+    result[tmp] = '\0';
+    for (int i = 0; result[i] != '\0'; i++)
+        if (result[i] > '9' || result[i] < '0') {
+            result = eval_expr(result);
+            i = 0;
+        }
+    return result;
 }
 
-char *infin_mod(char *str, char *str2)
+char *parentheses_loop(char *str)
+{
+    char *result;
+    char *new_string;
+    int start;
+    int end;
+
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] == '(') {
+            for (start = i; str[start] != '('; start++);
+            for (end = start; str[end] != ')'; end++)
+                if (str[end] == '(') {
+                    start = end;
+                    i = 0;
+                }
+            if ((result = malloc(end - start)) == NULL)
+                malloc_error_message("parentheses_loop");
+            result = calc_parentheses(result, str, start + 1, end);
+            new_string = recup_str_before_parentheses(str, start);
+            result = my_strcat(new_string, result);
+            result = my_strcat(result, end_of_str(str, end + 1));
+            str = result;
+        }
+    return result;
+}
+
+int check_parentheses(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] == '(' ||str[i] == ')')
+            return 1;
+    return 0;
+}
+
+char *parentheses(char *str)
+{
+    int count = 0;
+    char *result = str;
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '(')
+            count++;
+    }
+    if (count == 0)
+        return str;
+    while (check_parentheses(result) != 0)
+        result = parentheses_loop(result);
+    return result;
+}
+
+char *multiplier(char *str, char *str2, char *result)
+{
+    int count = 0;
+    int y;
+
+    for (int i = 0; str2[i] != '\0'; i++) {
+        for (y = 0 + i; str[count] != '\0'; y++, count++) {
+            result[y] = ATN(result[y]) + ATN(str2[i]) * ATN(str[count]);
+            if (result[y] > 9) {
+                result[y + 1] = NTA(result[y] / 10) + ATN(result[y + 1]);
+                result[y] = result[y] % 10;
+            }
+            result[y] = NTA(result[y]);
+        }
+        count = 0;
+    }
+    result[y + 1] = '\0';
+    result = my_revstr(result);
+    result = clear_string(result);
+    return result;
+}
+
+char *negative_to_positive(char *str, char *str2, char *result)
+{
+    str[strlen(str) - 1] = '\0';
+    str2[strlen(str2) - 1] = '\0';
+    return multiplier(str, str2, result);
+}
+
+char *negative_product(char *str, char *str2, char *result)
+{
+    int count;
+
+    for (count = 0; str[count] != '\0'; count++)
+        if (str[count] == '-')
+            str[count] = '\0';
+    for (count = 0; str2[count] != '\0'; count++)
+        if (str2[count] == '-')
+            str2[count] = '\0';
+    result = multiplier(str, str2, result);
+    result = change_sign(result);
+    return result;
+}
+
+char *func_caller(char *str, char *str2, int len)
 {
     char *result;
 
-    if (strcmp(str, "0") == 0)
+    if ((result = malloc(len)) == NULL)
+        malloc_error_message("negative_product");
+    for (int i = 0; i < len; i++)
+        result[i] = '0';
+    result[len - 1] = '\0';
+    str = my_revstr(str);
+    str2 = my_revstr(str2);
+    if (str[strlen(str) - 1] == '-' && str2[strlen(str2) - 1] == '-')
+        return (negative_to_positive(str, str2, result));
+    if (str[strlen(str) - 1] == '-' || str2[strlen(str2) - 1] == '-')
+        return (negative_product(str, str2, result));
+    if (strlen(str) > strlen(str2))
+        return multiplier(str, str2, result);
+    result = multiplier(str2, str, result);
+    return result;
+}
+
+char *infin_mult(char *str, char *str2)
+{
+    int value1;
+    char *result;
+
+    if (strcmp(str, "0") == 0 || strcmp(str2, "0") == 0)
         return "0";
-    if (strcmp(str2, "0") == 0) {
-        printf("Error: divisions by 0 are prohibited.\n");
-        exit(84);
-    }
-    if (strcmp(str, str2) == 0)
-        return "1";
-    if (str[0] == '-' || str2[0] == '-')
-        return modulo_negativity(str, str2);
-    if (strlen(str2) > strlen(str))
-        return "0";
-    result = calc_modulo(str, str2, "0");
+    value1 = strlen(str) + strlen(str2) + 3;
+    if (strlen(str) <= strlen(str2))
+        result = func_caller(str2, str, value1);
+    else
+        result = func_caller(str, str2, value1);
     return result;
 }
 
@@ -705,7 +893,8 @@ char **calc_priority(char **tmp, int count)
     int y;
 
     for (i = 0; tmp[i] != NULL; i++);
-    new_array = malloc(sizeof(char *) * (i - 1));
+    if ((new_array = malloc(sizeof(char *) * (i - 1))) == NULL)
+        malloc_error_message("calc_priority");
     for (y = 0; y < count - 1; y++)
         new_array[y] = tmp[y];
     new_array[count - 1] = parse(tmp[count - 1], tmp[count], tmp[count + 1]);
@@ -765,7 +954,7 @@ char **priority_loop(char **tmp)
     return tmp;
 }
 
-char **new_negative_array(char **tmp, int count)
+char **new_negative_array(char **tmp)
 {
     char **new;
     int len;
@@ -773,9 +962,11 @@ char **new_negative_array(char **tmp, int count)
     int y = 0;
 
     for (len = 0; tmp[len] != NULL; len++);
-    new = malloc(sizeof(char *) * (len + 1));
+    if ((new = malloc(sizeof(char *) * (len + 1))) == NULL)
+        malloc_error_message("new_negative_array");
     for (int i = 0; i < len; i++, nb++)
-        new[nb] = malloc(strlen(tmp[i]) + 2);
+        if ((new[nb] = malloc(strlen(tmp[i]) + 2)) == NULL)
+            malloc_error_message("new_negative_array");
     for (int i = 0; i < len; i++) {
         strcpy(new[i], tmp[i]);
         if ((tmp[i][0] > '9' || tmp[i][0] < '0') &&
@@ -799,7 +990,7 @@ char **negative_string(char **tmp, int i)
     for (int count = 0; count < i - 1; count++) {
         if ((tmp[count][0] > '9' || tmp[count][0] < '0') &&
             tmp[count][1] == '-') {
-            res = new_negative_array(tmp, count);
+            res = new_negative_array(tmp);
             free_array(tmp);
             return res;
         }
@@ -814,10 +1005,13 @@ char **first_char_is_negative(char **tmp, int len)
 
     if (tmp[0][0] != '-')
         return tmp;
-    result = malloc(sizeof(char *) * (len));
-    result[0] = malloc(strlen(tmp[0]) + strlen(tmp[1]) + 1);
+    if ((result = malloc(sizeof(char *) * (len))) == NULL)
+        malloc_error_message("first_char_is_negative");
+    if ((result[0] = malloc(strlen(tmp[0]) + strlen(tmp[1]) + 1)) == NULL)
+        malloc_error_message("first_char_is_negative");
     for (int i = 2; i < len && tmp[i] != NULL; i++, nb++)
-        result[nb] = malloc(strlen(tmp[i]) + 1);
+        if ((result[nb] = malloc(strlen(tmp[i]) + 1)) == NULL)
+            malloc_error_message("first_char_is_negative");
     nb = 1;
     result[0] = my_strcat(tmp[0], tmp[1]);
     for (int i = 2; i < len; i++, nb++)
@@ -826,111 +1020,6 @@ char **first_char_is_negative(char **tmp, int len)
     free(tmp);
     return result;
 }
-
-char *recup_str_before_parentheses(char *str, unsigned int start)
-{
-    char *new_string;
-
-    if (start >= strlen(str) - 1 || start == 0)
-        return "\0";
-    if (start > 0)
-        new_string = malloc(start + 2);
-    for (unsigned int tmp = 0; tmp < start; tmp++)
-        new_string[tmp] = str[tmp];
-        printf("%c\n", new_string[start - 1]);
-    if ((new_string[start - 1] >= '0' && new_string[start - 1] < '9') ||
-        new_string[start - 1] == ')')
-            new_string[start] = '*';
-    else
-        new_string[start] = '\0';
-    new_string[start + 1] = '\0';
-    return new_string;
-}
-
-char *end_of_str(char *str, int end)
-{
-    unsigned int nb = 0;
-    char *new_string;
-
-    if (str[end] == '\0')
-        return "\0";
-    new_string = malloc(strlen(str) - end + 2);
-    if (end > 0 && str[end - 1] == ')' &&
-        str[end + 1] != '(' && str[end] != ')') {
-        nb = 1;
-        new_string[0] = '*';
-    }
-    for (; str[end] != '\0' ; nb++, end++)
-        new_string[nb] = str[end];
-    new_string[nb] = '\0';
-    return new_string;
-}
-
-char *calc_parentheses(char *result, char *str, int start, int end)
-{
-    int tmp;
-
-    for (tmp = 0; start < end; tmp++, start++)
-        result[tmp] = str[start];
-    result[tmp] = '\0';
-    for (int i = 0; result[i] != '\0'; i++)
-        if (result[i] > '9' || result[i] < '0') {
-            result = eval_expr(result);
-            i = 0;
-        }
-    return result;
-}
-
-char *parentheses_loop(char *str)
-{
-    char *result;
-    char *new_string;
-    int start;
-    int end;
-
-    for (int i = 0; str[i] != '\0'; i++)
-        if (str[i] == '(') {
-            for (start = i; str[start] != '('; start++);
-            for (end = start; str[end] != ')'; end++)
-                if (str[end] == '(') {
-                    start = end;
-                    i = 0;
-                }
-            result = malloc(end - start);
-            result = calc_parentheses(result, str, start + 1, end);
-            new_string = recup_str_before_parentheses(str, start);
-            result = my_strcat(new_string, result);
-            result = my_strcat(result, end_of_str(str, end + 1));
-            str = result;
-        }
-    return result;
-}
-
-int check_parentheses(char *str)
-{
-    for (int i = 0; str[i] != '\0'; i++)
-        if (str[i] == '(' ||str[i] == ')')
-            return 1;
-    return 0;
-}
-
-char *parentheses(char *str)
-{
-    int count = 0;
-    char *result = str;
-
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (str[i] == '(')
-            count++;
-    }
-    if (count == 0)
-        return str;
-    while (check_parentheses(result) != 0)
-        result = parentheses_loop(result);
-    printf(result);
-    return result;
-}
-
 
 char *eval_expr(char *init)
 {
@@ -947,7 +1036,8 @@ char *eval_expr(char *init)
     tmp = negative_string(tmp, i);
     tmp = priority_loop(tmp);
     tmp = basic_op(tmp);
-    result = malloc(strlen(tmp[0]) + 1);
+    if ((result = malloc(strlen(tmp[0]) + 1)) == NULL)
+        malloc_error_message("eval_expr");
     result = strcpy(result, tmp[0]);
     free_array(tmp);
     return result;

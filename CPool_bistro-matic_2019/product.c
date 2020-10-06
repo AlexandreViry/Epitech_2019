@@ -53,8 +53,10 @@ char *negative_product(char *str, char *str2, char *result)
 
 char *func_caller(char *str, char *str2, int len)
 {
-    char *result = malloc(len);
+    char *result;
 
+    if ((result = malloc(len)) == NULL)
+        malloc_error_message("negative_product");
     for (int i = 0; i < len; i++)
         result[i] = '0';
     result[len - 1] = '\0';

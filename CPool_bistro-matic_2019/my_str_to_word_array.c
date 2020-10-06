@@ -19,7 +19,8 @@ char **malloc_array(char *init, int count, int len)
             i--;
         }
     }
-    result = malloc(sizeof(char *) * (count + 1));
+    if ((result = malloc(sizeof(char *) * (count + 1))) == NULL)
+        malloc_error_message("malloc_array");
     for (int i = 0; i < count; i++) {
         if ((init[tmp] >= '0' || init[tmp] <= '9') && init[tmp] != '\0')
             for (tmp2 = 0; (init[tmp] > 47 || init[tmp] < 58) &&
@@ -27,7 +28,8 @@ char **malloc_array(char *init, int count, int len)
         if ((init[tmp] < '0' || init[tmp] > '9') && init[tmp] != '\0')
             for (tmp2 = 0; (init[tmp] < 48 || init[tmp] > 57) &&
                      init[tmp] != '\0'; tmp2++, tmp++);
-        result[i] = malloc(tmp2 + 1);
+        if ((result[i] = malloc(tmp2 + 1)) == NULL)
+            malloc_error_message("malloc_array");
     }
     return result;
 }

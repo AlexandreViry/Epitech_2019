@@ -37,7 +37,8 @@ char **calc_priority(char **tmp, int count)
     int y;
 
     for (i = 0; tmp[i] != NULL; i++);
-    new_array = malloc(sizeof(char *) * (i - 1));
+    if ((new_array = malloc(sizeof(char *) * (i - 1))) == NULL)
+        malloc_error_message("calc_priority");
     for (y = 0; y < count - 1; y++)
         new_array[y] = tmp[y];
     new_array[count - 1] = parse(tmp[count - 1], tmp[count], tmp[count + 1]);
@@ -105,9 +106,11 @@ char **new_negative_array(char **tmp)
     int y = 0;
 
     for (len = 0; tmp[len] != NULL; len++);
-    new = malloc(sizeof(char *) * (len + 1));
+    if ((new = malloc(sizeof(char *) * (len + 1))) == NULL)
+        malloc_error_message("new_negative_array");
     for (int i = 0; i < len; i++, nb++)
-        new[nb] = malloc(strlen(tmp[i]) + 2);
+        if ((new[nb] = malloc(strlen(tmp[i]) + 2)) == NULL)
+            malloc_error_message("new_negative_array");
     for (int i = 0; i < len; i++) {
         strcpy(new[i], tmp[i]);
         if ((tmp[i][0] > '9' || tmp[i][0] < '0') &&
@@ -146,10 +149,13 @@ char **first_char_is_negative(char **tmp, int len)
 
     if (tmp[0][0] != '-')
         return tmp;
-    result = malloc(sizeof(char *) * (len));
-    result[0] = malloc(strlen(tmp[0]) + strlen(tmp[1]) + 1);
+    if ((result = malloc(sizeof(char *) * (len))) == NULL)
+        malloc_error_message("first_char_is_negative");
+    if ((result[0] = malloc(strlen(tmp[0]) + strlen(tmp[1]) + 1)) == NULL)
+        malloc_error_message("first_char_is_negative");
     for (int i = 2; i < len && tmp[i] != NULL; i++, nb++)
-        result[nb] = malloc(strlen(tmp[i]) + 1);
+        if ((result[nb] = malloc(strlen(tmp[i]) + 1)) == NULL)
+            malloc_error_message("first_char_is_negative");
     nb = 1;
     result[0] = my_strcat(tmp[0], tmp[1]);
     for (int i = 2; i < len; i++, nb++)
@@ -174,7 +180,8 @@ char *eval_expr(char *init)
     tmp = negative_string(tmp, i);
     tmp = priority_loop(tmp);
     tmp = basic_op(tmp);
-    result = malloc(strlen(tmp[0]) + 1);
+    if ((result = malloc(strlen(tmp[0]) + 1)) == NULL)
+        malloc_error_message("eval_expr");
     result = strcpy(result, tmp[0]);
     free_array(tmp);
     return result;

@@ -15,7 +15,8 @@ char *sub_negative(char *str, char *str2, char *result)
 
     result = calculator(str, str2, result);
     len = strlen(result);
-    result2 = malloc(len + 2);
+    if ((result2 = malloc(len + 2)) == NULL)
+        malloc_error_message("sub_negative");
     result2[0] = '-';
     for (i = 1; result[i] != '\0'; i++)
         result2[i] = result[i - 1];
@@ -34,8 +35,10 @@ char *check_negative(char *str, char *str2, char *result)
 
 char *sub_func_call(char *str, char *str2, int len)
 {
-    char *result = malloc(len + 2);
+    char *result;
 
+    if ((result = malloc(len + 2)) == NULL)
+        malloc_error_message("sub_func_call");
     str = my_revstr(str);
     str2 = my_revstr(str2);
     if (str2[strlen(str2) - 1] == '-' && str[strlen(str) - 1] != '-') {

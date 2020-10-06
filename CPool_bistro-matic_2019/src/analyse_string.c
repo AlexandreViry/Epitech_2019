@@ -2,8 +2,10 @@
 
 char *concat_strings(int ac, char **av)
 {
-    char *result = malloc(strlen(av[1]) + 1);
+    char *result;
 
+    if ((result = malloc(strlen(av[1]) + 1)) == NULL)
+        malloc_error_message("concat_strings");
     strcpy(result, av[1]);
     for (int i = 2; i < ac; i++)
         result = my_strcat(result, av[i]);

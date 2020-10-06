@@ -17,6 +17,7 @@ SRC	=	main.c		\
 		product.c	\
 		modulo.c		\
 		src/clear_string.c	\
+		src/errors.c		\
 		division.c		\
 		src/power_of_ten.c	\
 		infin_sub.c		\

@@ -7,10 +7,8 @@ char *divide_string(char *str, char *str2)
 
     if (compare_size(str, str2) == 2)
         return "0";
-    if ((new_string = malloc(len + 2)) == NULL) {
-        printf("Memory allocation failed");
-        exit(84);
-    }
+    if ((new_string = malloc(len + 2)) == NULL)
+        malloc_error_message("divide_string");
     for (unsigned int i = 0; i < len; i++)
         if (str[i] < str2[i]) {
             len++;
@@ -35,7 +33,8 @@ char *recup_string(char *str, char *str2)
             len++;
             break;
         }
-    new_string = malloc(strlen(str) + 1);
+    if ((new_string = malloc(strlen(str) + 1)) == NULL)
+        malloc_error_message("recup_string");
     for (i = 0; str[len] != '\0'; i++, len++) {
         new_string[i] = str[len];
     }
@@ -72,6 +71,7 @@ char *if_zero(char *result, char *str, char *str2, char *init)
         return result;
     mult = power_of_ten(i);
     result = infin_mult(result, mult);
+    free(mult);
     return result;
 }
 

@@ -7,7 +7,8 @@ char *recup_str_before_parentheses(char *str, unsigned int start)
     if (start >= strlen(str) - 1 || start == 0)
         return "\0";
     if (start > 0)
-        new_string = malloc(start + 2);
+        if ((new_string = malloc(start + 2)) == NULL)
+            malloc_error_message("recup_str_before_parentheses");
     for (unsigned int tmp = 0; tmp < start; tmp++)
         new_string[tmp] = str[tmp];
     if ((new_string[start - 1] >= '0' && new_string[start - 1] < '9') ||
@@ -26,7 +27,8 @@ char *end_of_str(char *str, int end)
 
     if (str[end] == '\0')
         return "\0";
-    new_string = malloc(strlen(str) - end + 2);
+    if ((new_string = malloc(strlen(str) - end + 2)) == NULL)
+        malloc_error_message("end_of_str");
     if (end > 0 && str[end - 1] == ')' &&
         str[end + 1] != '(' && str[end] != ')') {
         nb = 1;
@@ -68,7 +70,8 @@ char *parentheses_loop(char *str)
                     start = end;
                     i = 0;
                 }
-            result = malloc(end - start);
+            if ((result = malloc(end - start)) == NULL)
+                malloc_error_message("parentheses_loop");
             result = calc_parentheses(result, str, start + 1, end);
             new_string = recup_str_before_parentheses(str, start);
             result = my_strcat(new_string, result);
