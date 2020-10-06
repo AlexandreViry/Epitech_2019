@@ -174,10 +174,10 @@ char *eval_expr(char *init)
     init = parentheses(init);
     tmp = my_str_to_word_array(init);
     for (i = 0; tmp[i] != NULL; i++);
-    if ( i == 3)
-        return parse(tmp[0], tmp[1], tmp[2]);
     tmp = first_char_is_negative(tmp, i);
     tmp = negative_string(tmp, i);
+    if (i == 3)
+        return parse(tmp[0], tmp[1], tmp[2]);
     tmp = priority_loop(tmp);
     tmp = basic_op(tmp);
     if ((result = malloc(strlen(tmp[0]) + 1)) == NULL)
