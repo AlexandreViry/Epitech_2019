@@ -831,15 +831,16 @@ char *recup_str_before_parentheses(char *str, unsigned int start)
 {
     char *new_string;
 
-    if (start <= strlen(str) - 1)
+    if (start >= strlen(str) - 1 || start == 0)
         return "\0";
     if (start > 0)
         new_string = malloc(start + 2);
     for (unsigned int tmp = 0; tmp < start; tmp++)
         new_string[tmp] = str[tmp];
+        printf("%c\n", new_string[start - 1]);
     if ((new_string[start - 1] >= '0' && new_string[start - 1] < '9') ||
-        new_string[start - 1] == '(' || new_string[start - 1] == ')')
-        new_string[start] = '*';
+        new_string[start - 1] == ')')
+            new_string[start] = '*';
     else
         new_string[start] = '\0';
     new_string[start + 1] = '\0';
@@ -854,7 +855,8 @@ char *end_of_str(char *str, int end)
     if (str[end] == '\0')
         return "\0";
     new_string = malloc(strlen(str) - end + 2);
-    if (end > 0 && str[end - 1] == ')' && str[end + 1] != '(') {
+    if (end > 0 && str[end - 1] == ')' &&
+        str[end + 1] != '(' && str[end] != ')') {
         nb = 1;
         new_string[0] = '*';
     }
@@ -886,9 +888,6 @@ char *parentheses_loop(char *str)
     int start;
     int end;
 
-    for (start = 0; str[start] != '('; start++)
-        if (str[start] == '\0')
-            return str;
     for (int i = 0; str[i] != '\0'; i++)
         if (str[i] == '(') {
             for (start = i; str[start] != '('; start++);
@@ -907,10 +906,18 @@ char *parentheses_loop(char *str)
     return result;
 }
 
+int check_parentheses(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] == '(' ||str[i] == ')')
+            return 1;
+    return 0;
+}
+
 char *parentheses(char *str)
 {
     int count = 0;
-    char *result;
+    char *result = str;
 
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '(')
@@ -918,9 +925,12 @@ char *parentheses(char *str)
     }
     if (count == 0)
         return str;
-    result = parentheses_loop(str);
+    while (check_parentheses(result) != 0)
+        result = parentheses_loop(result);
+    printf(result);
     return result;
 }
+
 
 char *eval_expr(char *init)
 {
@@ -948,6 +958,9 @@ int main(void)
     int res;
     char *result;
 
+    result = eval_expr("12+(((3+4)+(5)))");
+    res = strcmp(result, "24");
+    //@ assert res == 0;
     result = eval_expr("13%2");
     res = strcmp(result, "1");
     //@ assert res == 0;
