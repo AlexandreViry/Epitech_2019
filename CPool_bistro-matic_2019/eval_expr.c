@@ -1,5 +1,8 @@
 #include "include/my.h"
 
+/* This is the function which will call the functions specific to each type of
+   operation according to the operators given as parameters in str2. */
+
 char *parse(char *str1, char *str2, char *str3)
 {
     switch (str2[0]) {
@@ -29,6 +32,9 @@ void display_array(char **array)
         printf("%s", array[i]);
     printf("\n");
 }
+
+/* This function will return the array with a new string when there is a
+   priority operation */
 
 char **calc_priority(char **tmp, int count)
 {
@@ -74,6 +80,8 @@ char **basic_op(char **tmp)
     }
     return tmp;
 }
+
+/* This loop will check if there are priority operations and send them to the calculator first */
 
 char **priority_loop(char **tmp)
 {
@@ -142,6 +150,9 @@ char **negative_string(char **tmp, int i)
     return tmp;
 }
 
+/* This function checks if the first character is a '-', and if so, it concats
+   the first two strings to get a negative number and return the new array. */
+
 char **first_char_is_negative(char **tmp, int len)
 {
     char **result;
@@ -164,6 +175,8 @@ char **first_char_is_negative(char **tmp, int len)
     free(tmp);
     return result;
 }
+
+/* This function is the one that will call all the operating functions. */
 
 char *eval_expr(char *init)
 {

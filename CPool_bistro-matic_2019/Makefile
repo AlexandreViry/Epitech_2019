@@ -5,7 +5,7 @@
 ## compile everything
 ##
 
-SRC	=	main.c		\
+SRC	=	main2.c		\
 		infin_add.c	\
 		src/my_putstr.c	\
 		src/my_putchar.c	\
@@ -33,6 +33,9 @@ all:	$(NAME)
 
 $(NAME):        $(OBJ)
 	gcc -g3 -o $(NAME) $(OBJ)
+
+afl:        $(OBJ)
+	afl-gcc -o $(NAME) $(OBJ)
 
 clean:
 	rm -f $(OBJ)
