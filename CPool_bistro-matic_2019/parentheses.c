@@ -1,5 +1,8 @@
 #include "include/my.h"
 
+/* This function returns a string which contains all the characters before
+   the parenthesis located at start pointer. */
+
 char *recup_str_before_parentheses(char *str, unsigned int start)
 {
     char *new_string;
@@ -19,6 +22,9 @@ char *recup_str_before_parentheses(char *str, unsigned int start)
     new_string[start + 1] = '\0';
     return new_string;
 }
+
+/* This function returns a string which contains all the characters located
+   after the closing parenthesis located at the end pointer. */
 
 char *end_of_str(char *str, int end)
 {
@@ -40,6 +46,10 @@ char *end_of_str(char *str, int end)
     return new_string;
 }
 
+/* This function calculates the content between the open parenthesis
+   located at the start pointer, up to the  closing parentesis
+   located at the end pointer. */
+
 char *calc_parentheses(char *result, char *str, int start, int end)
 {
     int tmp;
@@ -54,6 +64,10 @@ char *calc_parentheses(char *result, char *str, int start, int end)
         }
     return result;
 }
+
+/* This function is a loop which will stop only when there are no more
+   parentheses. This is the function that calls the other functions dealing
+   with parentheses. */
 
 char *parentheses_loop(char *str)
 {
@@ -81,12 +95,30 @@ char *parentheses_loop(char *str)
     return result;
 }
 
+/* This function checks if there is at least one perenthesis in the string
+   sent as an argument. */
+
 int check_parentheses(char *str)
 {
     for (int i = 0; str[i] != '\0'; i++)
         if (str[i] == '(' ||str[i] == ')')
             return 1;
     return 0;
+}
+
+/* This function checks if there are as many opening and closing parentheses. */
+
+int check_nb_of_parentheses(char *str)
+{
+    int count = 0;
+
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] == '(')
+            count++;
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] == ')')
+            count--;
+    return count;
 }
 
 char *parentheses(char *str)
@@ -97,6 +129,10 @@ char *parentheses(char *str)
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '(')
             count++;
+    }
+    if (check_nb_of_parentheses(str) != 0) {
+        printf("Syntax Error: check the number of parentheses.\n");
+        exit(-1);
     }
     if (count == 0)
         return str;
