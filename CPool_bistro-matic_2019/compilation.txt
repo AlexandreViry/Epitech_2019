@@ -1,1 +1,9 @@
-afl-clang -I.  division.c eval_expr.c infin_add.c infin_sub.c main2.c modulo.c my_str_to_word_array.c parentheses.c product.c src/analyse_string.c src/clear_string.c src/errors.c src/my_revstr.c src/power_of_ten.c src/my_strcat.c
+Pour compiler avec afl :
+
+afl-clang -o bistro-matic -I.  division.c eval_expr.c infin_add.c infin_sub.c main2.c modulo.c my_str_to_word_array.c parentheses.c product.c src/analyse_string.c src/clear_string.c src/errors.c src/my_revstr.c src/power_of_ten.c src/my_strcat.c
+
+Pour lancer les tests :
+
+afl-fuzz -f inputs/input -i inputs -o out ./bistro-matic
+
+En cas de problèmes de lancement, utiliser : sudo -i afin d'exécuter les taches demandées, puis faire contrôle d pour le quitter.
