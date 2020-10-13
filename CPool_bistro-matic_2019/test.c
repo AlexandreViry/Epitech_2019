@@ -718,7 +718,7 @@ char *end_of_str(char *str, int end)
     if ((new_string = malloc(strlen(str) - end + 2)) == NULL)
         malloc_error_message("end_of_str");
     if (end > 0 && str[end - 1] == ')' &&
-        str[end + 1] != '(' && str[end] != ')') {
+        (str[end + 1] > '9' || str[end + 1] < 0) && str[end] != ')') {
         nb = 1;
         new_string[0] = '*';
     }
@@ -1066,6 +1066,9 @@ int main(void)
     int res;
     char *result;
 
+    result = eval_expr("12+5-3*8-(1+2)/6");
+    res = strcmp(result, "-7");
+    //@ assert res == 0;
     result = eval_expr("77986/-986%854258*2/55500-1");
     res = strcmp(result, "-1");
     //@ assert res == 0;

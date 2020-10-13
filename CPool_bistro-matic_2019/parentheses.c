@@ -36,7 +36,7 @@ char *end_of_str(char *str, int end)
     if ((new_string = malloc(strlen(str) - end + 2)) == NULL)
         malloc_error_message("end_of_str");
     if (end > 0 && str[end - 1] == ')' &&
-        str[end + 1] != '(' && str[end] != ')') {
+        (str[end + 1] > '9' || str[end + 1] < 0) && str[end] != ')') {
         nb = 1;
         new_string[0] = '*';
     }
