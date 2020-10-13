@@ -148,7 +148,6 @@ char *change_sign(char *result)
     for (i = 0; result[i] != '\0'; i++)
         res[i + 1] = result[i];
     res[i + 1] = '\0';
-    free(result);
     return res;
 }
 

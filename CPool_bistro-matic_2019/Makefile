@@ -5,7 +5,7 @@
 ## compile everything
 ##
 
-SRC	=	main2.c		\
+SRC	=	main.c		\
 		infin_add.c	\
 		src/my_putstr.c	\
 		src/my_putchar.c	\

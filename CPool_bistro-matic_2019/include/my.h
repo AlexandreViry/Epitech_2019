@@ -46,3 +46,4 @@ char *clear_string(char *str);
 int is_valid_string(char *str);
 char *concat_strings(int ac, char **av);
 void malloc_error_message(char *function);
+char **delete_useless_zero(char **str);

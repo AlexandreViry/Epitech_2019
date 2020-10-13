@@ -107,6 +107,24 @@ char *my_strcat (char *dest, char const *src) {
     return(res);
 }
 
+char **delete_useless_zero(char **str)
+{
+    int y;
+    char *tmp;
+
+    for (int i = 0; str[i] != NULL; i++)
+        if (str[i][0] == '0') {
+            for (y = 1; str[i][y] == '0' && str[i][y + 1] != '\0'; y++);
+            tmp = my_revstr(str[i]);
+            if ((str[i] = realloc(str[i], strlen(str[i]) - y + 1)) == NULL)
+                malloc_error_message("delete_useless_zero");
+            strncpy(str[i], tmp, strlen(tmp) - y);
+            str[i][strlen(tmp) - y] = '\0';
+            str[i] = my_revstr(str[i]);
+        }
+    return str;
+}
+
 char *concat_strings(int ac, char **av)
 {
     char *result;
@@ -276,7 +294,6 @@ char *change_sign(char *result)
     for (i = 0; result[i] != '\0'; i++)
         res[i + 1] = result[i];
     res[i + 1] = '\0';
-    free(result);
     return res;
 }
 
@@ -1029,6 +1046,7 @@ char *eval_expr(char *init)
 
     init = parentheses(init);
     tmp = my_str_to_word_array(init);
+    tmp = delete_useless_zero(tmp);
     for (i = 0; tmp[i] != NULL; i++);
     tmp = first_char_is_negative(tmp, i);
     tmp = negative_string(tmp, i);
@@ -1048,6 +1066,9 @@ int main(void)
     int res;
     char *result;
 
+    result = eval_expr("77986/-986%854258*2/55500-1");
+    res = strcmp(result, "-1");
+    //@ assert res == 0;
     result = eval_expr("12+(((3+4)+(5)))");
     res = strcmp(result, "24");
     //@ assert res == 0;

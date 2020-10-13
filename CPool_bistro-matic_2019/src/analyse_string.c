@@ -32,3 +32,21 @@ int is_valid_string(char *str)
     }
     return 0;
 }
+
+char **delete_useless_zero(char **str)
+{
+    int y;
+    char *tmp;
+
+    for (int i = 0; str[i] != NULL; i++)
+        if (str[i][0] == '0') {
+            for (y = 1; str[i][y] == '0' && str[i][y + 1] != '\0'; y++);
+            tmp = my_revstr(str[i]);
+            if ((str[i] = realloc(str[i], strlen(str[i]) - y + 1)) == NULL)
+                malloc_error_message("delete_useless_zero");
+            strncpy(str[i], tmp, strlen(tmp) - y);
+            str[i][strlen(tmp) - y] = '\0';
+            str[i] = my_revstr(str[i]);
+        }
+    return str;
+}

@@ -186,6 +186,7 @@ char *eval_expr(char *init)
 
     init = parentheses(init);
     tmp = my_str_to_word_array(init);
+    tmp = delete_useless_zero(tmp);
     for (i = 0; tmp[i] != NULL; i++);
     tmp = first_char_is_negative(tmp, i);
     tmp = negative_string(tmp, i);
