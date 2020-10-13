@@ -40,7 +40,7 @@ char **delete_useless_zero(char **str)
 
     for (int i = 0; str[i] != NULL; i++)
         if (str[i][0] == '0') {
-            for (y = 1; str[i][y] == '0' && str[i][y + 1] != '\0'; y++);
+            for (y = 0; str[i][y] == '0' && str[i][y + 1] != '\0'; y++);
             tmp = my_revstr(str[i]);
             if ((str[i] = realloc(str[i], strlen(str[i]) - y + 1)) == NULL)
                 malloc_error_message("delete_useless_zero");
