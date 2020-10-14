@@ -5,19 +5,21 @@
 
 int main(void)
 {
-    int fd;
+    FILE *fd;
     char *tmp;
     struct stat sb;
 
     stat("inputs/input", &sb);
     if ((tmp = malloc(sb.st_size)) == NULL)
         return -1;
-    if ((fd = open("inputs/input", O_RDONLY)) == -1)
+    if ((fd = fopen("inputs/input", "r")) == NULL)
         return -1;
-    if (read(fd, tmp, sb.st_size) < 0)
+    fgets(tmp, sb.st_size, fd);
+    if (ferror(fd))
         return -1;
     if (is_valid_string(tmp) == 1)
         return 84;
+    puts(tmp);
     printf("%s\n", eval_expr(tmp));
     return 0;
 }
