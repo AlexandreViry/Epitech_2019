@@ -31,7 +31,7 @@ do
             \"files\": [
                 {
                     \"name\": \"inputs/input\",
-                    \"from\": CPool_bistro-matic_2019/corpus/\"$f\"
+                    \"from\": \"CPool_bistro-matic_2019/corpus/$f\"
                 }
             ]
         }" >> tis.config
