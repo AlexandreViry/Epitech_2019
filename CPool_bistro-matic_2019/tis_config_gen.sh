@@ -23,7 +23,7 @@ do
             \"CPool_bistro-matic/src/errors.c\",
             \"CPool_bistro-matic/src/my_revstr.c\",
             \"CPool_bistro-matic/src/power_of_ten.c\",
-            \"CPool_bistro-matic/src/my_strcat.c\",
+            \"CPool_bistro-matic/src/my_strcat.c\"
         ],
         \"machdep\": \"gcc_x86_64\",
         \"compilation_cmd\": \"-ICPool_bistro-matic\",
