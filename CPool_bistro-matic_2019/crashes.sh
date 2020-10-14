@@ -5,6 +5,8 @@ do
     cp "out/crashes/$f" "./corpus"
 done
 
+rm -rf out
+
 cd corpus
 
 for f in `ls`;
