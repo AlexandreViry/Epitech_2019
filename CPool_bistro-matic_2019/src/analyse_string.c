@@ -12,6 +12,17 @@ char *concat_strings(int ac, char **av)
     return result;
 }
 
+int check_for_negative_char(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++) {
+        for (; str[i] == '-'; i++)
+            if (str[i + 1] != '\0' && (str[i] == '/' || str[i] == '*' ||
+                                       str[i] == '%' || str[i] == '+'))
+                return 1;
+    }
+    return 0;
+}
+
 int is_valid_string(char *str)
 {
     char c;
@@ -37,7 +48,7 @@ int is_valid_string(char *str)
     }
     if (str[0] == '\0')
         return 1;
-    return 0;
+    return check_for_negative_char(str);
 }
 
 char **delete_useless_zero(char **str)

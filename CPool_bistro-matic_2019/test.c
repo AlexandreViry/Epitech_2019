@@ -107,24 +107,6 @@ char *my_strcat (char *dest, char const *src) {
     return(res);
 }
 
-char **delete_useless_zero(char **str)
-{
-    int y;
-    char *tmp;
-
-    for (int i = 0; str[i] != NULL; i++)
-        if (str[i][0] == '0') {
-            for (y = 0; str[i][y] == '0' && str[i][y + 1] != '\0'; y++);
-            tmp = my_revstr(str[i]);
-            if ((str[i] = realloc(str[i], strlen(str[i]) - y + 1)) == NULL)
-                malloc_error_message("delete_useless_zero");
-            strncpy(str[i], tmp, strlen(tmp) - y);
-            str[i][strlen(tmp) - y] = '\0';
-            str[i] = my_revstr(str[i]);
-        }
-    return str;
-}
-
 char *concat_strings(int ac, char **av)
 {
     char *result;
@@ -137,14 +119,26 @@ char *concat_strings(int ac, char **av)
     return result;
 }
 
+int check_for_negative_char(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++) {
+        for (; str[i] == '-'; i++);
+        if (str[i + 1] != '\0' && (str[i] == '/' || str[i] == '*' ||
+                                   str[i] == '%' || str[i] == '+'))
+            return 1;
+    }
+    return 0;
+}
+
 int is_valid_string(char *str)
 {
     char c;
 
-    if (str[0] == '+' || str[0] == '*' || str[0] == '/' || str[0] == '%')
+    if (str[0] == '+' || str[0] == '*' || str[0] == '/' || str[0] == '%' ||
+        strlen(str) == 0)
         return 1;
     c = str[strlen(str) - 1];
-    if (c == '+' || c == '*' || c == '/' || c == '%' || c == '-')
+    if ((c > '9' || c < '0') && c != ')')
         return 1;
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '\n') {
@@ -161,7 +155,25 @@ int is_valid_string(char *str)
     }
     if (str[0] == '\0')
         return 1;
-    return 0;
+    return check_for_negative_char(str);
+}
+
+char **delete_useless_zero(char **str)
+{
+    int y;
+    char *tmp;
+
+    for (int i = 0; str[i] != NULL; i++)
+        if (str[i][0] == '0') {
+            for (y = 0; str[i][y] == '0' && str[i][y + 1] != '\0'; y++);
+            tmp = my_revstr(str[i]);
+            if ((str[i] = realloc(str[i], strlen(str[i]) - y + 1)) == NULL)
+                malloc_error_message("delete_useless_zero");
+            strncpy(str[i], tmp, strlen(tmp) - y);
+            str[i][strlen(tmp) - y] = '\0';
+            str[i] = my_revstr(str[i]);
+        }
+    return str;
 }
 
 char *last_carry(char *result, int carry, int count)

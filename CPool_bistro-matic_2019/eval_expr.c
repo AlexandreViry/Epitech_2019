@@ -81,7 +81,8 @@ char **basic_op(char **tmp)
     return tmp;
 }
 
-/* This loop will check if there are priority operations and send them to the calculator first */
+/* This loop will check if there are priority operations and send
+   them to the calculator first */
 
 char **priority_loop(char **tmp)
 {
