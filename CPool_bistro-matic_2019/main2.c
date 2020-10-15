@@ -19,7 +19,6 @@ int main(void)
         return -1;
     if (is_valid_string(tmp) == 1)
         return 84;
-    puts(tmp);
     printf("%s\n", eval_expr(tmp));
     return 0;
 }
