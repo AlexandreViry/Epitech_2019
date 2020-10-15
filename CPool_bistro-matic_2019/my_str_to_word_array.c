@@ -76,7 +76,7 @@ char **my_str_to_word_array(char *init)
     char **result = malloc_array(init, 0, strlen(init));
 
     result = fill_array(result, init, 0, strlen(init));
-    if (result == NULL)
+    if (result == 0)
         exit(-1);
     return result;
 }
