@@ -14,11 +14,23 @@ char *concat_strings(int ac, char **av)
 
 int check_for_negative_char(char *str)
 {
+    if (str[0] == '-' && str[1] != '(' && (str[1] > '9' || str[1] < '0'))
+        return 1;
     for (int i = 0; str[i] != '\0'; i++) {
-        for (; str[i] == '-'; i++)
-            if (str[i + 1] != '\0' && (str[i] == '/' || str[i] == '*' ||
-                                       str[i] == '%' || str[i] == '+'))
-                return 1;
+        if (str[i] == '-') {
+            for (; str[i] == '-'; i++)
+                if (str[i + 1] != '\0' && (str[i + 1] == '/' || str[i + 1] =='*'
+                                           || str[i] == '%' || str[i] == '+'))
+                    return 1;
+        }
+    }
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '+' || str[i] == '*' || str[i] == '%' || str[i] == '/' ||
+            str[i] == '-')
+            for (int y = i; str[y] == '+' || str[y] == '*' || str[y] == '%' ||
+                     str[y] == '/' || str[y] == '-'; y++)
+                if (y - i >= 3)
+                    return 1;
     }
     return 0;
 }
