@@ -780,6 +780,28 @@ char *parentheses_loop(char *str)
     return result;
 }
 
+int check_nb_of_parentheses(char *str)
+{
+    int count = 0;
+    int order = 0;
+
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] == '(')
+            count++;
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] == ')')
+            count--;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '(')
+            order++;
+        if (str[i] == ')')
+            order--;
+        if (order < 0)
+            return order;
+    }
+    return count;
+}
+
 int check_parentheses(char *str)
 {
     for (int i = 0; str[i] != '\0'; i++)
@@ -796,6 +818,10 @@ char *parentheses(char *str)
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '(')
             count++;
+    }
+    if (check_nb_of_parentheses(str) != 0) {
+        printf("Syntax Error: check the number and order of parentheses.\n");
+        exit(-1);
     }
     if (count == 0)
         return str;

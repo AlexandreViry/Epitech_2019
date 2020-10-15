@@ -16,7 +16,8 @@ int is_valid_string(char *str)
 {
     char c;
 
-    if (str[0] == '+' || str[0] == '*' || str[0] == '/' || str[0] == '%')
+    if (str[0] == '+' || str[0] == '*' || str[0] == '/' || str[0] == '%' ||
+        strlen(str) == 0)
         return 1;
     c = str[strlen(str) - 1];
     if (c == '+' || c == '*' || c == '/' || c == '%' || c == '-')
