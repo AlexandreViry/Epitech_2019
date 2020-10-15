@@ -137,13 +137,13 @@ char **new_negative_array(char **tmp)
 
 char **negative_string(char **tmp, int i)
 {
-    char **res;
+    char **res = tmp;
 
     for (int count = 0; count < i - 1; count++) {
         if ((tmp[count][0] > '9' || tmp[count][0] < '0') &&
             tmp[count][1] == '-') {
-            res = new_negative_array(tmp);
             free_array(tmp);
+            tmp = new_negative_array(res);
             return res;
         }
     }
