@@ -20,7 +20,7 @@ int is_valid_string(char *str)
         strlen(str) == 0)
         return 1;
     c = str[strlen(str) - 1];
-    if (c == '+' || c == '*' || c == '/' || c == '%' || c == '-')
+    if ((c > '9' || c < '0') && c != ')')
         return 1;
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '\n') {
