@@ -16,8 +16,6 @@ int is_valid_string(char *str)
 {
     char c;
 
-    if (str[0] == '\0')
-        return 1;
     if (str[0] == '+' || str[0] == '*' || str[0] == '/' || str[0] == '%')
         return 1;
     c = str[strlen(str) - 1];
@@ -35,6 +33,8 @@ int is_valid_string(char *str)
             printf(" basic operators are allowed.\n");
             return 1;
         }
+        if (str[0] == '\0')
+            return 1;
     }
     return 0;
 }
