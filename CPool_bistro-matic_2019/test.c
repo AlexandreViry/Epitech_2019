@@ -121,11 +121,23 @@ char *concat_strings(int ac, char **av)
 
 int check_for_negative_char(char *str)
 {
+    if (str[0] == '-' && str[1] != '(' && (str[1] > '9' || str[1] < '0'))
+        return 1;
     for (int i = 0; str[i] != '\0'; i++) {
-        for (; str[i] == '-'; i++);
-        if (str[i + 1] != '\0' && (str[i] == '/' || str[i] == '*' ||
-                                   str[i] == '%' || str[i] == '+'))
-            return 1;
+        if (str[i] == '-') {
+            for (; str[i] == '-'; i++)
+                if (str[i + 1] != '\0' && (str[i + 1] == '/' || str[i + 1] =='*'
+                                           || str[i] == '%' || str[i] == '+'))
+                    return 1;
+        }
+    }
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '+' || str[i] == '*' || str[i] == '%' || str[i] == '/' ||
+            str[i] == '-')
+            for (int y = i; str[y] == '+' || str[y] == '*' || str[y] == '%' ||
+                     str[y] == '/' || str[y] == '-'; y++)
+                if (y - i >= 3)
+                    return 1;
     }
     return 0;
 }
@@ -711,6 +723,9 @@ char *infin_div(char *str, char *str2)
     return result;
 }
 
+/* This function returns a string which contains all the characters before
+   the parenthesis located at start pointer. */
+
 char *recup_str_before_parentheses(char *str, unsigned int start)
 {
     char *new_string;
@@ -730,6 +745,9 @@ char *recup_str_before_parentheses(char *str, unsigned int start)
     new_string[start + 1] = '\0';
     return new_string;
 }
+
+/* This function returns a string which contains all the characters located
+   after the closing parenthesis located at the end pointer. */
 
 char *end_of_str(char *str, int end)
 {
@@ -751,6 +769,10 @@ char *end_of_str(char *str, int end)
     return new_string;
 }
 
+/* This function calculates the content between the open parenthesis
+   located at the start pointer, up to the  closing parentesis
+   located at the end pointer. */
+
 char *calc_parentheses(char *result, char *str, int start, int end)
 {
     int tmp;
@@ -765,6 +787,10 @@ char *calc_parentheses(char *result, char *str, int start, int end)
         }
     return result;
 }
+
+/* This function is a loop which will stop only when there are no more
+   parentheses. This is the function that calls the other functions dealing
+   with parentheses. */
 
 char *parentheses_loop(char *str)
 {
@@ -792,6 +818,19 @@ char *parentheses_loop(char *str)
     return result;
 }
 
+/* This function checks if there is at least one perenthesis in the string
+   sent as an argument. */
+
+int check_parentheses(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+        if (str[i] == '(' ||str[i] == ')')
+            return 1;
+    return 0;
+}
+
+/* This function checks if there are as many opening and closing parentheses. */
+
 int check_nb_of_parentheses(char *str)
 {
     int count = 0;
@@ -812,14 +851,6 @@ int check_nb_of_parentheses(char *str)
             return order;
     }
     return count;
-}
-
-int check_parentheses(char *str)
-{
-    for (int i = 0; str[i] != '\0'; i++)
-        if (str[i] == '(' ||str[i] == ')')
-            return 1;
-    return 0;
 }
 
 char *parentheses(char *str)
@@ -922,6 +953,9 @@ char *infin_mult(char *str, char *str2)
     return result;
 }
 
+/* This is the function which will call the functions specific to each type of
+   operation according to the operators given as parameters in str2. */
+
 char *parse(char *str1, char *str2, char *str3)
 {
     switch (str2[0]) {
@@ -951,6 +985,9 @@ void display_array(char **array)
         printf("%s", array[i]);
     printf("\n");
 }
+
+/* This function will return the array with a new string when there is a
+   priority operation */
 
 char **calc_priority(char **tmp, int count)
 {
@@ -996,6 +1033,9 @@ char **basic_op(char **tmp)
     }
     return tmp;
 }
+
+/* This loop will check if there are priority operations and send
+   them to the calculator first */
 
 char **priority_loop(char **tmp)
 {
@@ -1057,12 +1097,14 @@ char **negative_string(char **tmp, int i)
         if ((tmp[count][0] > '9' || tmp[count][0] < '0') &&
             tmp[count][1] == '-') {
             res = new_negative_array(tmp);
-            free_array(tmp);
             return res;
         }
     }
     return tmp;
 }
+
+/* This function checks if the first character is a '-', and if so, it concats
+   the first two strings to get a negative number and return the new array. */
 
 char **first_char_is_negative(char **tmp, int len)
 {
@@ -1087,6 +1129,8 @@ char **first_char_is_negative(char **tmp, int len)
     return result;
 }
 
+/* This function is the one that will call all the operating functions. */
+
 char *eval_expr(char *init)
 {
     int i;
@@ -1109,6 +1153,7 @@ char *eval_expr(char *init)
     free_array(tmp);
     return result;
 }
+
 
 int main(void)
 {

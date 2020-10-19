@@ -197,6 +197,6 @@ char *eval_expr(char *init)
     if ((result = malloc(strlen(tmp[0]) + 1)) == NULL)
         malloc_error_message("eval_expr");
     result = strcpy(result, tmp[0]);
-    free_array(tmp);
+//    free_array(tmp);
     return result;
 }
