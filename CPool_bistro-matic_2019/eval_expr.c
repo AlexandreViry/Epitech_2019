@@ -45,11 +45,11 @@ char **calc_priority(char **tmp, int count)
     for (i = 0; tmp[i] != NULL; i++);
     if ((new_array = malloc(sizeof(char *) * (i - 1))) == NULL)
         malloc_error_message("calc_priority");
-    for (y = 0; y < count; y++)// it was count - 1
+    for (y = 0; y < count - 1; y++)
         new_array[y] = tmp[y];
     new_array[count - 1] = parse(tmp[count - 1], tmp[count], tmp[count + 1]);
     for (count += 2; count < i; count++, y++)
-        new_array[y + 1] = tmp[count];
+        new_array[y + 1] = tmp[count]; //the value 1 of new_array is uninitialised.
     new_array[y + 1] = NULL;
     return new_array;
 }
