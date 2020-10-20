@@ -140,7 +140,7 @@ char *infin_div(char *str, char *str2)
     tmp[0] = '0';
     tmp[1] = '\0';
     if (strcmp(str, "0") == 0)
-        return "0";
+        return tmp;
     if (strcmp(str2, "0") == 0) {
         printf("Error: divisions by 0 are prohibited.\n");
         exit(84);
@@ -154,6 +154,5 @@ char *infin_div(char *str, char *str2)
     if (strlen(str2) > strlen(str))
         return tmp;
     result = big_numbers(str, str2, tmp);
-    free(tmp);
     return result;
 }
