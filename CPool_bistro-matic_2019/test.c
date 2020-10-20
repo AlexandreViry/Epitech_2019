@@ -759,6 +759,9 @@ char *infin_div(char *str, char *str2)
 /* This function returns a string which contains all the characters before
    the parenthesis located at start pointer. */
 
+/* This function returns a string which contains all the characters before
+   the parenthesis located at start pointer. */
+
 char *recup_str_before_parentheses(char *str, unsigned int start)
 {
     char *new_string;
@@ -792,7 +795,7 @@ char *end_of_str(char *str, int end)
     if ((new_string = malloc(strlen(str) - end + 2)) == NULL)
         malloc_error_message("end_of_str");
     if (end > 0 && str[end - 1] == ')' &&
-        (str[end + 1] > '9' || str[end + 1] < 0) && str[end] != ')') {
+        (str[end + 1] > '9' || str[end + 1] < '0') && str[end] != ')') {
         nb = 1;
         new_string[0] = '*';
     }
@@ -809,6 +812,7 @@ char *end_of_str(char *str, int end)
 char *calc_parentheses(char *result, char *str, int start, int end)
 {
     int tmp;
+    char *tmp2 = malloc(end - start);
 
     for (tmp = 0; start < end; tmp++, start++)
         result[tmp] = str[start];
@@ -817,6 +821,13 @@ char *calc_parentheses(char *result, char *str, int start, int end)
         if (result[i] > '9' || result[i] < '0') {
             result = eval_expr(result);
             i = 0;
+        }
+    if (str[end + 1] >= '0' && str[end + 1] <= '9') {
+        strcpy(tmp2, result);
+        result = realloc(result, strlen(tmp2) + 2);
+        strcpy(result, tmp2);
+        result[strlen(tmp2)] = '*';
+        result [strlen(tmp2) + 1] = '\0';
         }
     return result;
 }
@@ -847,6 +858,7 @@ char *parentheses_loop(char *str)
             result = my_strcat(new_string, result);
             result = my_strcat(result, end_of_str(str, end + 1));
             str = result;
+            puts(str);
         }
     return result;
 }

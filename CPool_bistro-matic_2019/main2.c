@@ -11,17 +11,8 @@ int main(void)
     int res;
     struct stat sb;
 
-    stat("inputs/input", &sb);
-    if ((tmp = malloc(sb.st_size)) == NULL)
-        return -1;
-    if ((fd = fopen("inputs/input", "r")) == NULL)
-        return -1;
-    fgets(tmp, sb.st_size, fd);
-    if (ferror(fd))
-        return -1;
-    if (is_valid_string(tmp) == 1)
-        return 84;
-    printf("%s\n", eval_expr(tmp));
+    //manual tests
+
     result = eval_expr("12+5-3*8-(1+2)/6");
     res = strcmp(result, "-7");
     //@ assert res == 0;
@@ -94,5 +85,19 @@ int main(void)
     result = eval_expr("-17*8(15-3)");
     res = strcmp(result, "-1632");
     //@ assert res == 0;
+
+    //fuzzer test
+
+    stat("inputs/input", &sb);
+    if ((tmp = malloc(sb.st_size)) == NULL)
+        return -1;
+    if ((fd = fopen("inputs/input", "r")) == NULL)
+        return -1;
+    fgets(tmp, sb.st_size, fd);
+    if (ferror(fd))
+        return -1;
+    if (is_valid_string(tmp) == 1)
+        return 84;
+    printf("%s\n", eval_expr(tmp));
     return 0;
 }

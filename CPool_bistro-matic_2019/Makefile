@@ -27,12 +27,12 @@ OBJ	=       $(SRC:.c=.o)
 
 NAME	=	bistro-matic
 
-CPPFLAGS	= -Wall -Wextra -Iinclude
+CPPFLAGS	= -g3 -Wall -Wextra -Iinclude
 
 all:	$(NAME)
 
 $(NAME):        $(OBJ)
-	gcc -g3 -o $(NAME) $(OBJ)
+	gcc -o $(NAME) $(OBJ)
 
 afl:        $(OBJ)
 	afl-gcc -o $(NAME) $(OBJ)
