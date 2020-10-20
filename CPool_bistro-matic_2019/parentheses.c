@@ -14,7 +14,7 @@ char *recup_str_before_parentheses(char *str, unsigned int start)
             malloc_error_message("recup_str_before_parentheses");
     for (unsigned int tmp = 0; tmp < start; tmp++)
         new_string[tmp] = str[tmp];
-    if ((new_string[start - 1] >= '0' && new_string[start - 1] < '9') ||
+    if ((new_string[start - 1] >= '0' && new_string[start - 1] <= '9') ||
         new_string[start - 1] == ')')
             new_string[start] = '*';
     else
@@ -26,7 +26,7 @@ char *recup_str_before_parentheses(char *str, unsigned int start)
 /* This function returns a string which contains all the characters located
    after the closing parenthesis located at the end pointer. */
 
-char *end_of_str(char *str, int end)
+char *end_of_str(char *str, int end) //fonction qui pose problème à cause d'un * qu'elle met au début
 {
     unsigned int nb = 0;
     char *new_string;
@@ -36,13 +36,15 @@ char *end_of_str(char *str, int end)
     if ((new_string = malloc(strlen(str) - end + 2)) == NULL)
         malloc_error_message("end_of_str");
     if (end > 0 && str[end - 1] == ')' &&
-        (str[end + 1] > '9' || str[end + 1] < '0') && str[end] != ')') {
+        (str[end] <= '9' && str[end] >= '0') && str[end] != ')') {
+        printf("%c\n", str[end]);
         nb = 1;
         new_string[0] = '*';
     }
     for (; str[end] != '\0' ; nb++, end++)
         new_string[nb] = str[end];
     new_string[nb] = '\0';
+    puts(new_string);
     return new_string;
 }
 
@@ -99,7 +101,6 @@ char *parentheses_loop(char *str)
             result = my_strcat(new_string, result);
             result = my_strcat(result, end_of_str(str, end + 1));
             str = result;
-            puts(str);
         }
     return result;
 }
