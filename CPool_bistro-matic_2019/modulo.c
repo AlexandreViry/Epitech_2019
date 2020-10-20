@@ -37,19 +37,31 @@ char *modulo_negativity(char *str, char *str2)
 char *infin_mod(char *str, char *str2)
 {
     char *result;
+    char *tmp = malloc(2);
 
-    if (strcmp(str, "0") == 0)
-        return "0";
+    if (tmp == NULL)
+        malloc_error_message("infin_mod");
+    if (strcmp(str, "0") == 0) {
+        tmp[0] = '0';
+        tmp[1] = '\0';
+        return tmp;
+    }
     if (strcmp(str2, "0") == 0) {
         printf("Error: divisions by 0 are prohibited.\n");
         exit(84);
     }
-    if (strcmp(str, str2) == 0)
-        return "1";
+    if (strcmp(str, str2) == 0) {
+        tmp[0] = '1';
+        tmp[1] = '\0';
+        return tmp;
+    }
     if (str[0] == '-' || str2[0] == '-')
         return modulo_negativity(str, str2);
-    if (strlen(str2) > strlen(str))
-        return "0";
+    if (strlen(str2) > strlen(str)) {
+        tmp[0] = '0';
+        tmp[1] = '\0';
+        return tmp;
+    }
     result = calc_modulo(str, str2, "0");
     return result;
 }

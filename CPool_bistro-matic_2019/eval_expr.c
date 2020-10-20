@@ -49,7 +49,7 @@ char **calc_priority(char **tmp, int count)
         new_array[y] = tmp[y];
     new_array[count - 1] = parse(tmp[count - 1], tmp[count], tmp[count + 1]);
     for (count += 2; count < i; count++, y++)
-        new_array[y + 1] = tmp[count]; //the value 1 of new_array is uninitialised.
+        new_array[y + 1] = tmp[count];
     new_array[y + 1] = NULL;
     return new_array;
 }
