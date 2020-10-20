@@ -62,10 +62,10 @@ char *calc_parentheses(char *result, char *str, int start, int end)
             result = eval_expr(result);
             i = 0;
         }
-    if (str[end + 1] >= '0' && str[end + 1] <= '9') {
+    /*if (str[end + 1] >= '0' && str[end + 1] <= '9') {
         result[tmp] = '*';
         result [tmp + 1] = '\0';
-    }
+        }*/
     return result;
 }
 
