@@ -490,19 +490,31 @@ char *modulo_negativity(char *str, char *str2)
 char *infin_mod(char *str, char *str2)
 {
     char *result;
+    char *tmp = malloc(2);
 
-    if (strcmp(str, "0") == 0)
-        return "0";
+    if (tmp == NULL)
+        malloc_error_message("infin_mod");
+    if (strcmp(str, "0") == 0) {
+        tmp[0] = '0';
+        tmp[1] = '\0';
+        return tmp;
+    }
     if (strcmp(str2, "0") == 0) {
         printf("Error: divisions by 0 are prohibited.\n");
         exit(84);
     }
-    if (strcmp(str, str2) == 0)
-        return "1";
+    if (strcmp(str, str2) == 0) {
+        tmp[0] = '1';
+        tmp[1] = '\0';
+        return tmp;
+    }
     if (str[0] == '-' || str2[0] == '-')
         return modulo_negativity(str, str2);
-    if (strlen(str2) > strlen(str))
-        return "0";
+    if (strlen(str2) > strlen(str)) {
+        tmp[0] = '0';
+        tmp[1] = '\0';
+        return tmp;
+    }
     result = calc_modulo(str, str2, "0");
     return result;
 }
@@ -590,9 +602,15 @@ char *divide_string(char *str, char *str2)
 {
     char *new_string;
     unsigned int len = strlen(str2);
+    char *tmp;
 
-    if (compare_size(str, str2) == 2)
-        return "0";
+    if ((tmp = malloc(2)) == NULL)
+        malloc_error_message("divide_string");
+    if (compare_size(str, str2) == 2) {
+        tmp[0] = '0';
+        tmp[1] = '\0';
+        return tmp;
+    }
     if ((new_string = malloc(len + 2)) == NULL)
         malloc_error_message("divide_string");
     for (unsigned int i = 0; i < len; i++)
@@ -693,33 +711,48 @@ char *negative_to_positive2(char *str)
 
 char *negativity(char *str, char *str2)
 {
+    char *tmp;
+
+    if ((tmp = malloc(2)) == NULL)
+        malloc_error_message("negativity");
+    tmp[0] = '0';
+    tmp[1] = '\0';
     if (str[0] == '-' && str2[0] == '-')
         return big_numbers(negative_to_positive2(str),
-                           negative_to_positive2(str2), "0");
+                           negative_to_positive2(str2), tmp);
     if (str[0] == '-' && str2[0] != '-')
-        return change_sign(big_numbers(negative_to_positive2(str), str2, "0"));
+        return change_sign(big_numbers(negative_to_positive2(str), str2, tmp));
     if (str[0] != '-' && str2[0] == '-')
-        return change_sign(big_numbers(str, negative_to_positive2(str2), "0"));
+        return change_sign(big_numbers(str, negative_to_positive2(str2), tmp));
+    free(tmp);
     return str;
 }
 
 char *infin_div(char *str, char *str2)
 {
     char *result;
+    char *tmp;
 
+    if ((tmp = malloc(2)) == NULL)
+        malloc_error_message("infin_div");
+    tmp[0] = '0';
+    tmp[1] = '\0';
     if (strcmp(str, "0") == 0)
         return "0";
     if (strcmp(str2, "0") == 0) {
         printf("Error: divisions by 0 are prohibited.\n");
         exit(84);
     }
-    if (strcmp(str, str2) == 0)
-        return "1";
+    if (strcmp(str, str2) == 0) {
+        tmp[0] = '1';
+        return tmp;
+    }
     if (str[0] == '-' || str2[0] == '-')
         return negativity(str, str2);
     if (strlen(str2) > strlen(str))
-        return "0";
-    result = big_numbers(str, str2, "0");
+        return tmp;
+    result = big_numbers(str, str2, tmp);
+    free(tmp);
     return result;
 }
 
@@ -942,9 +975,14 @@ char *infin_mult(char *str, char *str2)
 {
     int value1;
     char *result;
+    char *tmp = malloc(2);
 
+    if (tmp == NULL)
+        malloc_error_message("infin_mult");
+    tmp[0] = '0';
+    tmp[1] = '\0';
     if (strcmp(str, "0") == 0 || strcmp(str2, "0") == 0)
-        return "0";
+        return tmp;
     value1 = strlen(str) + strlen(str2) + 3;
     if (strlen(str) <= strlen(str2))
         result = func_caller(str2, str, value1);

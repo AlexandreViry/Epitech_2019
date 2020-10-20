@@ -76,9 +76,14 @@ char *infin_mult(char *str, char *str2)
 {
     int value1;
     char *result;
+    char *tmp = malloc(2);
 
+    if (tmp == NULL)
+        malloc_error_message("infin_mult");
+    tmp[0] = '0';
+    tmp[1] = '\0';
     if (strcmp(str, "0") == 0 || strcmp(str2, "0") == 0)
-        return "0";
+        return tmp;
     value1 = strlen(str) + strlen(str2) + 3;
     if (strlen(str) <= strlen(str2))
         result = func_caller(str2, str, value1);
