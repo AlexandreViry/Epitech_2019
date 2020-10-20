@@ -51,8 +51,9 @@ int is_valid_string(char *str)
             break;
         }
         c = str[i];
-        if (c != '-' && c != '+' && c != '*' && c != '/' && c != '%'
-            && c != '(' && c != ')' && (c > '9' || c < '0') && c != '\0') {
+        if ((c == '(' && str[i + 1] == ')') ||
+            (c != '-' && c != '+' && c != '*' && c != '/' && c != '%'
+            && c != '(' && c != ')' && (c > '9' || c < '0') && c != '\0')) {
             printf("Syntax Error: only integers and");
             printf(" basic operators are allowed.\n");
             return 1;

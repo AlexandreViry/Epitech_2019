@@ -36,7 +36,7 @@ char *end_of_str(char *str, int end)
     if ((new_string = malloc(strlen(str) - end + 2)) == NULL)
         malloc_error_message("end_of_str");
     if (end > 0 && str[end - 1] == ')' &&
-        (str[end + 1] > '9' || str[end + 1] < 0) && str[end] != ')') {
+        (str[end + 1] > '9' || str[end + 1] < '0') && str[end] != ')') {
         nb = 1;
         new_string[0] = '*';
     }
@@ -62,6 +62,10 @@ char *calc_parentheses(char *result, char *str, int start, int end)
             result = eval_expr(result);
             i = 0;
         }
+    if (str[end + 1] >= '0' && str[end + 1] <= '9') {
+        result[tmp] = '*';
+        result [tmp + 1] = '\0';
+    }
     return result;
 }
 
@@ -91,6 +95,7 @@ char *parentheses_loop(char *str)
             result = my_strcat(new_string, result);
             result = my_strcat(result, end_of_str(str, end + 1));
             str = result;
+            puts(str);
         }
     return result;
 }
