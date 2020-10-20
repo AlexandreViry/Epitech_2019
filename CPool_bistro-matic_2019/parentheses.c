@@ -54,7 +54,7 @@ char *calc_parentheses(char *result, char *str, int start, int end)
 {
     int tmp;
 
-    result = realloc(result, strlen(end - start) + 2);
+    result = realloc(result, end - start + 2);
     for (tmp = 0; start < end; tmp++, start++)
         result[tmp] = str[start];
     result[tmp] = '\0';
