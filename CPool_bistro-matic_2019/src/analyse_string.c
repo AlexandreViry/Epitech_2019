@@ -12,6 +12,47 @@ char *concat_strings(int ac, char **av)
     return result;
 }
 
+char *merge_successive_signs(char *str, int i, char sign)
+{
+    char *tmp = str;
+    int y;
+
+    if ((realloc(str, strlen(str))) == NULL)
+        malloc_error_message("merge_successive_signs");
+    for (y = 0; y != i; y++)
+        str[y] = tmp[y];
+    if (sign != '+' && str[i - 1] != '(') {
+    str[i] = sign;
+    i++;
+    y = y + 1;
+    }
+    else
+        y = i + 2;
+    for (; tmp[y] != '\0'; y++, i++)
+        str[i] = tmp[y];
+    str[i] = '\0';
+    puts(str);
+    free(tmp);
+    return str;
+}
+
+char *search_two_signs(char *str)
+{
+    int i;
+
+    for (i = 0; str[i] != '\0'; i++) {
+        if ((str[i] == '+' && str[i + 1] == '-') ||
+            (str[i] == '-' && str[i + 1] == '+'))
+            merge_successive_signs(str, i, '-');
+        if ((str[i] == '-' && str[i + 1] == '-') ||
+            (str[i] == '+' && str[i + 1] == '+'))
+            merge_successive_signs(str, i, '+');
+        if (str[i] == '*' && str[i + 1] == '*')
+            merge_successive_signs(str, i, '*');
+    }
+    return str;
+}
+
 int check_for_negative_char(char *str)
 {
     if (str[0] == '-' && str[1] != '(' && (str[1] > '9' || str[1] < '0'))
