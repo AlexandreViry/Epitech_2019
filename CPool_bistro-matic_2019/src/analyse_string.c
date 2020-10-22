@@ -14,24 +14,24 @@ char *concat_strings(int ac, char **av)
 
 char *merge_successive_signs(char *str, int i, char sign)
 {
-    char *tmp = str;
+    char *tmp = malloc(strlen(str) + 1);
     int y;
 
-    if ((realloc(str, strlen(str))) == NULL)
+    strcpy(tmp, str);
+    if ((str = realloc(str, strlen(str))) == NULL)
         malloc_error_message("merge_successive_signs");
-    for (y = 0; y != i; y++)
+    for (y = 0; y < i; y++)
         str[y] = tmp[y];
-    if (sign != '+' && str[i - 1] != '(') {
-    str[i] = sign;
-    i++;
-    y = y + 1;
+    if (sign != '+' || str[i - 1] != '(') {
+        str[i] = sign;
+        ++i;
+        y = i + 1;
     }
     else
-        y = i + 2;
+        y = i + 1;
     for (; tmp[y] != '\0'; y++, i++)
         str[i] = tmp[y];
     str[i] = '\0';
-    puts(str);
     free(tmp);
     return str;
 }
@@ -47,8 +47,6 @@ char *search_two_signs(char *str)
         if ((str[i] == '-' && str[i + 1] == '-') ||
             (str[i] == '+' && str[i + 1] == '+'))
             merge_successive_signs(str, i, '+');
-        if (str[i] == '*' && str[i + 1] == '*')
-            merge_successive_signs(str, i, '*');
     }
     return str;
 }

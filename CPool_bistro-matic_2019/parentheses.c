@@ -14,9 +14,9 @@ char *recup_str_before_parentheses(char *str, unsigned int start)
             malloc_error_message("recup_str_before_parentheses");
     for (unsigned int tmp = 0; tmp < start; tmp++)
         new_string[tmp] = str[tmp];
-    if ((new_string[start] >= '0' && new_string[start] <= '9') ||
-        new_string[start] == ')')
-            new_string[start] = '*';
+    if (start > 0 && (new_string[start - 1] >=
+       '0' && (new_string[start - 1] <= '9' || new_string[start] == ')')))
+        new_string[start] = '*';
     else
         new_string[start] = '\0';
     new_string[start + 1] = '\0';
@@ -35,11 +35,11 @@ char *end_of_str(char *str, int end)
         return "\0";
     if ((new_string = malloc(strlen(str) - end + 2)) == NULL)
         malloc_error_message("end_of_str");
-    /* if (end > 0 && str[end - 1] == ')' && */
-    /*     (str[end] <= '9' && str[end] >= '0') && str[end] != ')') { */
-    /*     nb = 1; */
-    /*     new_string[0] = '*'; */
-    /* } */
+     if (end > 0 && str[end - 1] == ')' &&
+         (str[end] <= '9' && str[end] >= '0') && str[end] != ')') {
+         nb = 1;
+         new_string[0] = '*';
+     }
     for (; str[end] != '\0' ; nb++, end++)
         new_string[nb] = str[end];
     new_string[nb] = '\0';
@@ -67,9 +67,9 @@ char *calc_parentheses(char *result, char *str, int start, int end)
         strcpy(tmp2, result);
         result = realloc(result, strlen(tmp2) + 2);
         strcpy(result, tmp2);
-        result[strlen(tmp2)] = '*';
         result [strlen(tmp2) + 1] = '\0';
         }
+    free(tmp2);
     return result;
 }
 
