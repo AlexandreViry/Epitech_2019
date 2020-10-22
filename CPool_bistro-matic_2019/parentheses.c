@@ -98,8 +98,8 @@ char *parentheses_loop(char *str)
             new_string = recup_str_before_parentheses(str, start);
             result = my_strcat(new_string, result);
             result = my_strcat(result, end_of_str(str, end + 1));
-            search_two_signs(result);
-            str = result;
+            result = search_two_signs(result);
+            strcpy(str, result);
         }
     return result;
 }
