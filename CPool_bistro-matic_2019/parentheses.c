@@ -139,6 +139,14 @@ int check_nb_of_parentheses(char *str)
     return count;
 }
 
+int check_parentheses_errors(char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+        if ((str[i] > '9' || str[i] < '0') && str[i + 1] == ')')
+            return 1;
+    return 0;
+}
+
 char *parentheses(char *str)
 {
     int count = 0;
@@ -147,6 +155,10 @@ char *parentheses(char *str)
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '(')
             count++;
+    }
+    if (check_parentheses_errors(str) != 0) {
+        printf("Syntax Error: check the operators in parentheses.\n");
+        exit(-1);
     }
     if (check_nb_of_parentheses(str) != 0) {
         printf("Syntax Error: check the number and order of parentheses.\n");
