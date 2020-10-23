@@ -13,3 +13,5 @@ for f in `ls`;
 do
     mv $f `sha256sum  $f | cut -d' ' -f1 | cut -c1-15`
 done
+
+cp "./*" "../all_corpus"
