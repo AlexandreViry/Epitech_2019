@@ -201,6 +201,5 @@ char *eval_expr(char *init)
         memset(result, 0, 2);
         strcpy(result, "0");
     }
-    free_array(tmp);
     return result;
 }
