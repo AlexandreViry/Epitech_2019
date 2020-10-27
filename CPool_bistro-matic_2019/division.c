@@ -35,7 +35,7 @@ char *recup_string(char *str, char *str2)
     if (compare_size(str, str2) == 2)
         return NULL;
     for (unsigned int i = 0; i < len; i++)
-        if (str[i] < str2[i]) {
+        if (str[i] < str2[i] && len < strlen(str)) {
             len++;
             break;
         }
