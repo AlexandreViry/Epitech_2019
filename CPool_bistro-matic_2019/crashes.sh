@@ -16,4 +16,4 @@ do
     mv $f `sha256sum  $f | cut -d' ' -f1 | cut -c1-15`
 done
 
-cp ".*" "../old_corpus"
+cp "*" "../old_corpus"
