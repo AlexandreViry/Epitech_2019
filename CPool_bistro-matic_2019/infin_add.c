@@ -82,8 +82,11 @@ char *calculator(char *str, char *str2, char *result)
     int carry = 0;
     int count = 0;
 
-    for (int i = 0; str2[i] != '\0'; i++, count = i) {
-        result[i] = str[i] + str2[i] + carry - 96;
+    for (unsigned int i = 0; str2[i] != '\0'; i++, count = i) {
+        if (i < strlen(str))
+            result[i] = str[i] + str2[i] + carry - 96;
+        else
+            result[i] = str2[i] + carry - 48;
         carry = 0;
         if (result[i] > 9) {
             result[i] -= 10;
