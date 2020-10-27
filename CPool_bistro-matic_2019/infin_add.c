@@ -93,6 +93,8 @@ char *calculator(char *str, char *str2, char *result)
             carry++;
         }
     }
+    if ((unsigned int)count > strlen(str))
+        return last_carry(result, carry, count);
     for (; str[count] != '\0'; count++) {
         result[count] = ATN(str[count]) + carry;
         carry = 0;
