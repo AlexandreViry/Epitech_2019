@@ -22,7 +22,7 @@ char *merge_successive_signs(char *str, int i, char sign)
         malloc_error_message("merge_successive_signs");
     for (y = 0; y < i; y++)
         str[y] = tmp[y];
-    if (sign != '+' || str[i - 1] != '(') {
+    if (sign != '+' && str[i - 1] != '(') {
         str[i] = sign;
         ++i;
         y = i + 1;
@@ -41,12 +41,21 @@ char *search_two_signs(char *str)
     int i;
 
     for (i = 0; str[i] != '\0'; i++) {
+        if (i == 0 && str[i] == '-' && str[i + 1] == '-') {
+            for (int y = 2; str[y] != '\0'; y++)
+                str[y - 2] = str[y];
+            str[strlen(str) - 2] = '\0';
+        }
         if ((str[i] == '+' && str[i + 1] == '-') ||
-            (str[i] == '-' && str[i + 1] == '+'))
+            (str[i] == '-' && str[i + 1] == '+')) {
             str = merge_successive_signs(str, i, '-');
+            i = 0;
+        }
         if ((str[i] == '-' && str[i + 1] == '-') ||
-            (str[i] == '+' && str[i + 1] == '+'))
+            (str[i] == '+' && str[i + 1] == '+')) {
             str = merge_successive_signs(str, i, '+');
+            i = 0;
+        }
     }
     return str;
 }

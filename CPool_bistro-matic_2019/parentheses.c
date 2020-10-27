@@ -53,7 +53,7 @@ char *end_of_str(char *str, int end)
 char *calc_parentheses(char *result, char *str, int start, int end)
 {
     int tmp;
-    char *tmp2 = malloc(end - start);
+    char *tmp2 = malloc(end - start + 1);
 
     for (tmp = 0; start < end; tmp++, start++)
         result[tmp] = str[start];
@@ -97,6 +97,7 @@ char *parentheses_loop(char *str)
             result = calc_parentheses(result, str, start + 1, end);
             new_string = recup_str_before_parentheses(str, start);
             result = my_strcat(new_string, result);
+            result = search_two_signs(result);
             result = my_strcat(result, end_of_str(str, end + 1));
             result = search_two_signs(result);
             strcpy(str, result);
