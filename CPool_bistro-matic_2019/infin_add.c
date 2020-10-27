@@ -77,24 +77,48 @@ char *subtractor(char *str, char *str2, char *result)
     return negative_carry(result, carry, count);
 }
 
+/*char *calculator(char *str, char *str2, char *result)
+  {
+  int carry = 0;
+  int count = 0;
+
+  for (unsigned int i = 0; str2[i] != '\0'; i++, count = i) {
+  if (i < strlen(str))
+  result[i] = str[i] + str2[i] + carry - 96;
+  else
+  result[i] = str2[i] + carry - 48;
+  carry = 0;
+  if (result[i] > 9) {
+  result[i] -= 10;
+  carry++;
+  }
+  }
+  if ((unsigned int)count > strlen(str))
+  return last_carry(result, carry, count);
+  for (; str[count] != '\0'; count++) {
+  result[count] = ATN(str[count]) + carry;
+  carry = 0;
+  if (result[count] > 9) {
+  result[count] -= 10;
+  carry++;
+  }
+  }
+  return last_carry(result, carry, count);
+  }*/
+
 char *calculator(char *str, char *str2, char *result)
 {
     int carry = 0;
     int count = 0;
 
-    for (unsigned int i = 0; str2[i] != '\0'; i++, count = i) {
-        if (i < strlen(str))
-            result[i] = str[i] + str2[i] + carry - 96;
-        else
-            result[i] = str2[i] + carry - 48;
+    for (int i = 0; str2[i] != '\0'; i++, count = i) {
+        result[i] = str[i] + str2[i] + carry - 96;
         carry = 0;
         if (result[i] > 9) {
             result[i] -= 10;
             carry++;
         }
     }
-    if ((unsigned int)count > strlen(str))
-        return last_carry(result, carry, count);
     for (; str[count] != '\0'; count++) {
         result[count] = ATN(str[count]) + carry;
         carry = 0;
