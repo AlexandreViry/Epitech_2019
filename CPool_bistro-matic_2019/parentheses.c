@@ -110,7 +110,7 @@ char *parentheses_loop(char *str)
 int check_parentheses(char *str)
 {
     for (int i = 0; str[i] != '\0'; i++)
-        if (str[i] == '(' ||str[i] == ')')
+        if (str[i] == '(' || str[i] == ')')
             return 1;
     return 0;
 }
@@ -141,10 +141,13 @@ int check_nb_of_parentheses(char *str)
 
 int check_parentheses_errors(char *str)
 {
-    for (int i = 0; str[i] != '\0'; i++)
+    for (int i = 0; str[i] != '\0'; i++) {
         if ((str[i] > '9' || str[i] < '0') &&
             str[i + 1] == ')' && str[i] != ')')
             return 1;
+        if (str[i] == '(' && (str[i + 1] > '9' || str[i + 1] < '0'))
+            return 1;
+    }
     return 0;
 }
 
