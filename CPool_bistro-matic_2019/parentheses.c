@@ -145,7 +145,8 @@ int check_parentheses_errors(char *str)
         if ((str[i] > '9' || str[i] < '0') &&
             str[i + 1] == ')' && str[i] != ')')
             return 1;
-        if (str[i] == '(' && (str[i + 1] > '9' || str[i + 1] < '0'))
+        if (str[i] == '(' && (str[i + 1] > '9' || str[i + 1] < '0') &&
+            str[i + 1] != ')' && str[i + 1] != '(')
             return 1;
     }
     return 0;
